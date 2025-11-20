@@ -8,7 +8,7 @@
     
     <style>
         :root {
-            /* Paleta de Cores Profissional */
+            /* Paleta de Cores Profissional (Visual Aprimorado) */
             --primary: #1e3c72;    /* Azul Profundo */
             --secondary: #2a5298;  /* Azul Vibrante */
             --accent: #00b09b;     /* Verde Tiffanys/Teal */
@@ -207,7 +207,7 @@
 
         /* --- ELEMENTOS VISUAIS NOVOS --- */
         
-        /* 1. Donut Chart (CSS Only) */
+        /* 1. Donut Chart */
         .chart-container {
             display: flex;
             align-items: center;
@@ -274,7 +274,7 @@
         .skill-track { width: 100%; height: 8px; background: #eee; border-radius: 4px; overflow: hidden; }
         .skill-fill { height: 100%; border-radius: 4px; animation: fillBar 1.5s ease-out forwards; }
         
-        /* 5. Comparison Cards (Green/Red) */
+        /* 5. Comparison Cards */
         .comparison-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 20px; }
         .comp-card { padding: 20px; border-radius: 12px; border-left: 5px solid; }
         .comp-card.pros { background: #f0f9eb; border-color: var(--success); }
@@ -297,7 +297,7 @@
             content: '"'; font-size: 5rem; position: absolute; top: -10px; left: 10px; opacity: 0.2; font-family: serif;
         }
 
-        /* 7. Flowchart Visual (CSS Only) */
+        /* 7. Flowchart Visual */
         .flow-diagram {
             display: flex; flex-direction: column; align-items: center; gap: 10px;
         }
@@ -479,7 +479,7 @@
                                 <h4 style="color: var(--dark);">Impacto da COVID-19</h4>
                             </div>
                             <p style="font-size: 0.95rem; color: #555;">
-                                A pandemia acelerou drasticamente a <strong>Telefonoaudiologia</strong>, superando barreiras geográficas e consolidando práticas híbridas.
+                                A pandemia acelerou drasticamente a <strong>Telefonoaudiologia</strong>, superando barreiras geográficas e consolidando práticas híbridas (síncronas e assíncronas).
                             </p>
                         </div>
                     </div>
@@ -865,11 +865,11 @@
                 if(e.key === 'ArrowLeft') updateSlide(currentSlide - 1);
                 if(e.key === 'ArrowUp') {
                     e.preventDefault();
-                    mainContent.scrollBy({top: -100, behavior: 'smooth'});
+                    mainContent.scrollBy({top: -150, behavior: 'smooth'});
                 }
                 if(e.key === 'ArrowDown') {
                     e.preventDefault();
-                    mainContent.scrollBy({top: 100, behavior: 'smooth'});
+                    mainContent.scrollBy({top: 150, behavior: 'smooth'});
                 }
             });
         });
