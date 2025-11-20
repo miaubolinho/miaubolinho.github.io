@@ -8,7 +8,7 @@
     
     <style>
         :root {
-            /* Paleta de Cores Profissional (Visual Aprimorado) */
+            /* Paleta de Cores Profissional */
             --primary: #1e3c72;    /* Azul Profundo */
             --secondary: #2a5298;  /* Azul Vibrante */
             --accent: #00b09b;     /* Verde Tiffanys/Teal */
@@ -131,7 +131,7 @@
             background-color: var(--white);
             border-radius: 20px;
             box-shadow: var(--card-shadow);
-            padding: 50px;
+            padding: 40px; /* Reduzi um pouco o padding geral */
             margin-bottom: 40px;
             min-height: 90vh;
             animation: fadeInSlide 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
@@ -152,13 +152,13 @@
             display: flex;
             align-items: center;
             gap: 15px;
-            margin-bottom: 40px;
-            padding-bottom: 20px;
+            margin-bottom: 25px; /* Reduzido margem */
+            padding-bottom: 15px;
             border-bottom: 2px solid var(--light);
         }
         
         .slide-header h2 {
-            font-size: 2.2rem;
+            font-size: 2rem;
             color: var(--primary);
             font-weight: 800;
             background: -webkit-linear-gradient(0deg, var(--primary), var(--secondary));
@@ -169,25 +169,33 @@
         h3.section-title {
             font-size: 1.4rem;
             color: var(--secondary);
-            margin: 40px 0 20px 0;
+            margin: 30px 0 15px 0;
             display: flex;
             align-items: center;
             gap: 10px;
         }
         
+        h4.subsection-title {
+            font-size: 1.1rem;
+            color: var(--primary);
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
         /* --- CARDS & LAYOUTS --- */
-        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 25px; }
+        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
         .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
         .grid-4 { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; }
 
         .content-card {
             background: var(--white);
             border-radius: 12px;
-            padding: 25px;
+            padding: 20px;
             border: 1px solid var(--border);
             transition: var(--transition);
             position: relative;
             overflow: hidden;
+            height: 100%;
         }
         
         .content-card:hover {
@@ -204,33 +212,72 @@
             color: var(--secondary);
             margin-bottom: 15px;
         }
-
-        /* --- ELEMENTOS VISUAIS NOVOS --- */
         
-        /* 1. Donut Chart */
+        .content-card ul {
+            padding-left: 20px;
+            margin-top: 10px;
+            list-style: none;
+        }
+        .content-card li {
+            position: relative;
+            padding-left: 20px; 
+            margin-bottom: 10px;
+            color: #555;
+        }
+        .content-card li::before {
+            content: '•';
+            position: absolute;
+            left: 0;
+            color: var(--secondary);
+            font-weight: bold;
+            font-size: 1.2rem;
+            line-height: 1rem;
+        }
+
+        .card-title {
+            font-size: 1.1rem;
+            color: var(--primary);
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            font-weight: 700;
+        }
+
+        .card-title svg {
+            margin-right: 10px;
+            color: var(--accent);
+            width: 20px;
+            height: 20px;
+        }
+
+        /* --- ELEMENTOS VISUAIS AVANÇADOS --- */
+        
+        /* 1. Donut Chart (Compactado para Intro) */
         .chart-container {
             display: flex;
             align-items: center;
-            gap: 30px;
+            gap: 20px;
             background: #f8fbff;
-            padding: 20px;
+            padding: 15px;
             border-radius: 15px;
             border: 1px solid #e1e8f0;
+            margin-bottom: 15px;
         }
         .donut-chart {
-            width: 100px; height: 100px;
+            width: 80px; height: 80px;
             border-radius: 50%;
             background: conic-gradient(var(--accent) 0% 40%, #e0e0e0 40% 100%);
             display: flex; align-items: center; justify-content: center;
             position: relative;
+            flex-shrink: 0;
         }
         .donut-inner {
-            width: 70px; height: 70px;
+            width: 55px; height: 55px;
             background: white;
             border-radius: 50%;
             display: flex; align-items: center; justify-content: center;
             font-weight: 800; color: var(--dark);
-            font-size: 1.2rem;
+            font-size: 1rem;
         }
         
         /* 2. Timeline Vertical */
@@ -256,11 +303,11 @@
         }
         
         /* 3. Badges */
-        .badge-container { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 10px; }
+        .badge-container { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
         .badge {
-            padding: 6px 12px;
+            padding: 4px 10px;
             border-radius: 20px;
-            font-size: 0.8rem;
+            font-size: 0.75rem;
             font-weight: 600;
             background: #eef2f7;
             color: var(--primary);
@@ -279,19 +326,20 @@
         .comp-card { padding: 20px; border-radius: 12px; border-left: 5px solid; }
         .comp-card.pros { background: #f0f9eb; border-color: var(--success); }
         .comp-card.cons { background: #fdf0ed; border-color: var(--danger); }
-        .comp-title { font-weight: 800; margin-bottom: 10px; display: flex; align-items: center; gap: 8px; }
+        .comp-title { font-weight: 800; margin-bottom: 15px; display: flex; align-items: center; gap: 8px; font-size: 1.1rem; }
 
         /* 6. Quote Block */
         .quote-block {
             background: linear-gradient(135deg, var(--primary), var(--secondary));
             color: white;
-            padding: 30px;
+            padding: 25px;
             border-radius: 15px;
             position: relative;
             font-style: italic;
-            font-size: 1.1rem;
+            font-size: 1.05rem;
             line-height: 1.6;
             box-shadow: 0 10px 20px rgba(30, 60, 114, 0.2);
+            margin: 25px 0;
         }
         .quote-block::before {
             content: '"'; font-size: 5rem; position: absolute; top: -10px; left: 10px; opacity: 0.2; font-family: serif;
@@ -304,23 +352,36 @@
         .flow-box {
             background: white; padding: 12px 20px; border-radius: 8px;
             border: 1px solid var(--border); box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-            text-align: center; width: 80%; max-width: 400px;
+            text-align: center; width: 90%; max-width: 400px;
             font-weight: 600; color: var(--dark);
             position: relative;
+            display: flex; align-items: center; justify-content: center; gap: 10px;
         }
         .flow-box.start { background: var(--primary); color: white; border: none; }
         .flow-box.end { background: var(--accent); color: white; border: none; }
         .flow-arrow { color: #bdc3c7; }
+
+        /* 8. Info Card (Small) */
+        .info-card {
+            background: #fdfdfd;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+            padding: 20px;
+            border: 1px solid #edf2f7;
+            border-top: 3px solid var(--secondary); 
+            transition: var(--transition);
+            text-align: center;
+        }
+        .info-card:hover { transform: translateY(-5px); border-top-color: var(--accent); }
+        .info-card h4 { color: var(--primary); margin-bottom: 8px; display: flex; align-items: center; justify-content: center; gap: 8px; }
+        .info-card p { font-size: 0.9rem; color: #666; }
 
         /* --- SLIDE COVER --- */
         .slide-cover {
             display: flex; flex-direction: column; align-items: center; justify-content: center;
             text-align: center; min-height: 80vh; position: relative; overflow: hidden;
         }
-        /* Dynamic Background Circles */
-        .bg-circle {
-            position: absolute; border-radius: 50%; opacity: 0.05; z-index: 0;
-        }
+        .bg-circle { position: absolute; border-radius: 50%; opacity: 0.05; z-index: 0; }
         .c1 { width: 400px; height: 400px; background: var(--secondary); top: -100px; left: -100px; }
         .c2 { width: 300px; height: 300px; background: var(--accent); bottom: -50px; right: -50px; }
         .c3 { width: 150px; height: 150px; border: 20px solid var(--primary); top: 20%; right: 10%; }
@@ -331,16 +392,36 @@
             border-radius: 50%; display: flex; align-items: center; justify-content: center;
             margin: 0 auto 30px; color: var(--primary);
         }
+
+        /* --- THANK YOU SLIDE (SLIDE 8) --- */
+        .thank-you-container {
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            height: 100%; min-height: 70vh; text-align: center;
+        }
+        .ty-title {
+            font-size: 3.5rem; font-weight: 800; color: var(--primary); margin-bottom: 10px;
+            background: -webkit-linear-gradient(0deg, var(--primary), var(--accent));
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            animation: popIn 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
+        }
+        .ty-subtitle { font-size: 1.5rem; color: var(--secondary); margin-bottom: 40px; opacity: 0; animation: fadeInSlide 1s forwards 0.3s; }
         
+        /* Dynamic Shapes */
+        .shape { position: absolute; opacity: 0.6; animation: float 6s infinite ease-in-out; }
+        .s1 { top: 20%; left: 10%; color: var(--accent); animation-delay: 0s; }
+        .s2 { bottom: 20%; right: 10%; color: var(--secondary); animation-delay: 2s; }
+        .s3 { top: 15%; right: 20%; color: var(--warning); animation-delay: 1s; }
+        .s4 { bottom: 15%; left: 20%; color: var(--primary); animation-delay: 3s; }
+
         /* --- NAVIGATION CONTROLS --- */
         .nav-controls {
-            display: flex; justify-content: space-between; margin-top: 50px; padding-top: 20px;
+            display: flex; justify-content: space-between; margin-top: 20px; padding-top: 20px;
             border-top: 1px solid var(--border); position: relative; z-index: 10;
         }
         .btn-nav {
-            padding: 12px 30px; border-radius: 30px; border: none; cursor: pointer;
+            padding: 10px 25px; border-radius: 30px; border: none; cursor: pointer;
             font-weight: 600; display: flex; align-items: center; gap: 10px;
-            transition: var(--transition);
+            transition: var(--transition); font-size: 0.95rem;
         }
         .btn-prev { background: white; border: 1px solid var(--border); color: var(--dark); }
         .btn-prev:hover { background: #f8f9fa; transform: translateX(-5px); }
@@ -353,14 +434,16 @@
         /* Animations */
         @keyframes fadeInSlide { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
         @keyframes fillBar { from { width: 0; } }
+        @keyframes popIn { 0% { transform: scale(0.8); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
+        @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-20px); } }
 
-        /* Responsive */
+        /* Responsividade */
         @media (max-width: 900px) {
             .sidebar { width: 70px; padding: 20px 10px; }
             .sidebar-header h2 span, .sidebar-header p, .nav-section-title, .nav-item span, .nav-subitem { display: none; }
             .main-content { margin-left: 70px; padding: 20px; }
             .nav-item { justify-content: center; }
-            .grid-2, .grid-3 { grid-template-columns: 1fr; }
+            .grid-2, .grid-3, .grid-4, .comparison-grid, .stats-container { grid-template-columns: 1fr; }
         }
     </style>
 </head>
@@ -445,49 +528,61 @@
                     <h2>1. INTRODUÇÃO</h2>
                 </div>
 
-                <div class="grid-2">
-                    <div>
-                        <div class="content-card" style="height: 100%;">
-                            <h4 style="margin-bottom: 15px; color: var(--primary);">Contextualização</h4>
-                            <p style="line-height: 1.6; color: #555; margin-bottom: 20px;">
-                                A Fonoaudiologia estuda a comunicação humana e suas alterações. A integração de recursos tecnológicos é um fenômeno em expansão, visando otimizar capacidades funcionais e qualidade de vida.
-                            </p>
-                            <div class="badge-container">
-                                <span class="badge accent">Inovação</span>
-                                <span class="badge">Qualidade de Vida</span>
-                                <span class="badge">Digitalização</span>
-                            </div>
+                <div class="grid-2" style="align-items: start; gap: 20px;">
+                    <div class="content-card">
+                        <h4 class="subsection-title"><i data-lucide="activity" style="vertical-align: middle; margin-right: 8px;"></i> Contextualização</h4>
+                        <p style="line-height: 1.5; margin-bottom: 15px; font-size: 0.95rem;">
+                            A Fonoaudiologia estuda a comunicação humana e suas alterações. A integração de recursos tecnológicos é um fenômeno em expansão, visando otimizar capacidades funcionais e qualidade de vida.
+                        </p>
+                        <div class="badge-container">
+                            <span class="badge accent">Inovação</span>
+                            <span class="badge">Qualidade de Vida</span>
+                            <span class="badge">Digitalização</span>
                         </div>
                     </div>
                     
                     <div>
-                        <div class="chart-container">
+                         <div class="chart-container" style="padding: 15px; margin-bottom: 15px;">
                             <div class="donut-chart">
                                 <div class="donut-inner">40%</div>
                             </div>
                             <div>
                                 <h5 style="color: var(--primary); font-weight: 700; margin-bottom: 5px;">Alta Demanda</h5>
-                                <p style="font-size: 0.9rem; color: #666;">
-                                    Distúrbios dos Sons da Fala (DSF) constituem mais de 40% da casuística clínica, justificando o uso de softwares de apoio.
+                                <p style="font-size: 0.85rem; color: #666; line-height: 1.3;">
+                                    Distúrbios dos Sons da Fala (DSF) constituem grande parte da casuística, justificando o uso de softwares de apoio.
                                 </p>
                             </div>
                         </div>
-                        
-                        <div class="content-card" style="margin-top: 20px; border-left: 4px solid var(--warning);">
-                            <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px;">
-                                <i data-lucide="alert-triangle" color="#f1c40f"></i>
-                                <h4 style="color: var(--dark);">Impacto da COVID-19</h4>
-                            </div>
-                            <p style="font-size: 0.95rem; color: #555;">
-                                A pandemia acelerou drasticamente a <strong>Telefonoaudiologia</strong>, superando barreiras geográficas e consolidando práticas híbridas (síncronas e assíncronas).
+
+                        <div class="content-card" style="padding: 15px;">
+                            <h4 class="subsection-title" style="font-size: 1rem; margin-bottom: 8px;"><i data-lucide="smartphone" style="vertical-align: middle; margin-right: 8px;"></i> Expansão Digital</h4>
+                            <p style="font-size: 0.9rem; color: #555; margin: 0;">
+                                Incorporação de softwares para avaliação e terapia, aumentando o engajamento e permitindo coleta de dados quantitativos (PBE).
                             </p>
                         </div>
                     </div>
                 </div>
                 
-                <div class="content-card" style="margin-top: 25px; background: #fff5f5; border-color: #fed7d7;">
-                    <h4 style="color: var(--danger); margin-bottom: 10px;">O Problema de Pesquisa</h4>
-                    <p>Apesar do potencial, persiste uma <strong>carência de estudos sistematizados</strong> sobre a efetiva prevalência, padrões de uso e validação clínica dessas inovações.</p>
+                <div class="grid-2" style="margin-top: 20px;">
+                    <div class="content-card" style="border-left: 4px solid var(--warning); padding: 15px;">
+                        <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 5px;">
+                            <i data-lucide="alert-triangle" color="#f1c40f" size="20"></i>
+                            <h4 style="color: var(--dark); margin: 0; font-size: 1rem;">Impacto da COVID-19</h4>
+                        </div>
+                        <p style="font-size: 0.9rem; color: #555; margin: 0;">
+                            Aceleração da Telefonoaudiologia, consolidando práticas híbridas e superando barreiras geográficas.
+                        </p>
+                    </div>
+
+                    <div class="content-card" style="background: #fff5f5; border-color: #fed7d7; padding: 15px;">
+                        <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 5px;">
+                            <i data-lucide="help-circle" color="#e74c3c" size="20"></i>
+                            <h4 style="color: var(--danger); margin: 0; font-size: 1rem;">O Problema</h4>
+                        </div>
+                        <p style="font-size: 0.9rem; color: #555; margin: 0;">
+                            Carência de estudos sistematizados sobre a efetiva prevalência, padrões de uso e validação clínica.
+                        </p>
+                    </div>
                 </div>
 
                 <div class="nav-controls">
@@ -502,51 +597,66 @@
                     <h2>2. FUNDAMENTAÇÃO TEÓRICA</h2>
                 </div>
 
-                <h3 class="section-title">Categorias de Tecnologias de Software</h3>
-                <p style="margin-bottom: 20px; color: #666;">A revisão categoriza o uso de softwares em duas vertentes principais:</p>
+                <h3 class="section-title">2.1 Fonoaudiologia e Áreas</h3>
+                <p style="margin-bottom: 20px; color: #666;">Profissão regulamentada pela <strong>Lei nº 6.965/1981</strong>. Atuação preventiva, diagnóstica e terapêutica nas áreas de:</p>
 
+                <div class="grid-3" style="margin-bottom: 30px;">
+                    <div class="info-card">Audiologia</div>
+                    <div class="info-card">Linguagem</div>
+                    <div class="info-card">Motricidade</div>
+                    <div class="info-card">Voz</div>
+                    <div class="info-card">Disfagia</div>
+                </div>
+
+                <h3 class="section-title" id="sec-2-3">2.3 e 2.4 Tecnologias de Software</h3>
                 <div class="grid-2">
                     <div class="content-card">
-                        <div class="card-icon"><i data-lucide="settings"></i></div>
-                        <h4 style="color: var(--primary); margin-bottom: 10px;">1. Avaliação Diagnóstica</h4>
-                        <ul style="list-style: none; padding: 0;">
-                            <li style="margin-bottom: 8px; display: flex; gap: 10px;">
-                                <i data-lucide="check" size="16" color="var(--success)"></i> Análise acústica da voz (F0, Jitter, Shimmer).
-                            </li>
-                            <li style="margin-bottom: 8px; display: flex; gap: 10px;">
-                                <i data-lucide="check" size="16" color="var(--success)"></i> Audiômetros computadorizados.
-                            </li>
-                            <li style="display: flex; gap: 10px;">
-                                <i data-lucide="check" size="16" color="var(--success)"></i> Mapeamento de AASI/Implante Coclear.
-                            </li>
+                        <div class="card-icon"><i data-lucide="video"></i></div>
+                        <h4 class="subsection-title">Telefonoaudiologia</h4>
+                        <ul>
+                            <li><strong>Síncrona:</strong> Tempo real (videoconferência).</li>
+                            <li><strong>Assíncrona:</strong> Envio de dados/exames para análise posterior.</li>
+                            <li>Regulamentada pelo CFFa (Resolução Nº 580/2020 e Nº 615/2021).</li>
                         </ul>
                     </div>
 
                     <div class="content-card">
-                        <div class="card-icon"><i data-lucide="play-circle"></i></div>
-                        <h4 style="color: var(--primary); margin-bottom: 10px;">2. Intervenção Terapêutica</h4>
-                        <ul style="list-style: none; padding: 0;">
-                            <li style="margin-bottom: 8px; display: flex; gap: 10px;">
-                                <i data-lucide="check" size="16" color="var(--success)"></i> Treino auditivo-cognitivo.
-                            </li>
-                            <li style="margin-bottom: 8px; display: flex; gap: 10px;">
-                                <i data-lucide="check" size="16" color="var(--success)"></i> Biofeedback visual de fala.
-                            </li>
-                            <li style="display: flex; gap: 10px;">
-                                <i data-lucide="check" size="16" color="var(--success)"></i> Gamificação (ex: Wordwall, GameFono).
-                            </li>
+                        <div class="card-icon"><i data-lucide="settings"></i></div>
+                        <h4 class="subsection-title">Avaliação Diagnóstica</h4>
+                        <ul>
+                            <li>Análise acústica da voz (F0, Jitter, Shimmer).</li>
+                            <li>Audiômetros computadorizados.</li>
+                            <li>Mapeamento de AASI/Implante Coclear.</li>
                         </ul>
+                    </div>
+                    
+                    <div class="content-card">
+                        <div class="card-icon"><i data-lucide="play-circle"></i></div>
+                        <h4 class="subsection-title">Intervenção Terapêutica</h4>
+                        <ul>
+                            <li>Softwares como <em>GraphoGame</em>, <em>Afinando o Cérebro</em> e <em>SpeechEasy</em>.</li>
+                            <li>Gamificação (ex: Wordwall, GameFono).</li>
+                        </ul>
+                    </div>
+                    
+                     <div class="content-card" style="border-left: 5px solid var(--accent);">
+                        <div style="display: flex; align-items: center; justify-content: space-between;">
+                            <div>
+                                <h4 style="color: var(--accent); margin-bottom: 5px;">Tecnologia Assistiva (TA)</h4>
+                                <p style="font-size: 0.95rem;">Democratização do acesso à <strong>Comunicação Aumentativa e Alternativa (CAA)</strong> via apps móveis.</p>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
-                <div class="content-card" style="margin-top: 30px; border-left: 5px solid var(--accent);">
-                    <div style="display: flex; align-items: center; justify-content: space-between;">
-                        <div>
-                            <h4 style="color: var(--accent); margin-bottom: 5px;">Democratização via Tecnologia Assistiva (TA)</h4>
-                            <p style="font-size: 0.95rem;">Aplicativos móveis tornaram a <strong>Comunicação Aumentativa e Alternativa (CAA)</strong> acessível, substituindo hardwares caros.</p>
-                        </div>
-                        <i data-lucide="smartphone" size="40" color="var(--accent)" style="opacity: 0.5;"></i>
-                    </div>
+                <h3 class="section-title" id="sec-2-4" style="border-left-color: var(--danger);">2.5 Desafios e Ética</h3>
+                <div class="content-card" style="border-left: 4px solid var(--danger);">
+                     <div class="card-title" style="color: var(--danger);"><i data-lucide="shield-alert"></i> Segurança e Acesso</div>
+                     <ul>
+                         <li><strong>LGPD:</strong> Dados de saúde são sensíveis; exigem consentimento e segurança robusta.</li>
+                         <li><strong>Exclusão Digital:</strong> Disparidade de acesso fere o princípio da justiça.</li>
+                         <li><strong>Sigilo Profissional:</strong> Vulnerabilidade na transmissão de dados.</li>
+                     </ul>
                 </div>
 
                 <div class="nav-controls">
@@ -583,9 +693,9 @@
                         <p style="font-size: 0.9rem; margin-top: 10px; color: #666;">Finalidades terapêuticas (Voz, Linguagem, DPAC, etc.).</p>
                     </div>
                     <div class="content-card" style="text-align: center;">
-                        <div class="card-icon" style="margin: 0 auto 15px;"><i data-lucide="scale"></i></div>
+                        <div class="card-icon" style="margin: 0 auto 15px;"><i data-lucide="thumbs-up"></i></div>
                         <strong>Investigar Impacto</strong>
-                        <p style="font-size: 0.9rem; margin-top: 10px; color: #666;">Analisar vantagens, desvantagens e desafios.</p>
+                        <p style="font-size: 0.9rem; margin-top: 10px; color: #666;">Analisar vantagens, desvantagens e desafios da implementação.</p>
                     </div>
                 </div>
 
@@ -607,6 +717,9 @@
                         <div class="content-card">
                             <p style="margin-bottom: 15px;">
                                 <strong>Tipo:</strong> Revisão de literatura integrativa com abordagem quantitativa.
+                            </p>
+                            <p style="margin-bottom: 15px;">
+                                <strong>Descritores:</strong> Fonoaudiologia, Tecnologia, Terapia, Software, Aplicativo.
                             </p>
                             
                             <div class="timeline">
@@ -675,24 +788,18 @@
 
                 <div class="grid-4">
                     <div class="content-card" style="padding: 15px;">
-                        <strong style="color: var(--primary); display: block; margin-bottom: 5px;">DPAC</strong>
+                        <strong style="color: var(--primary); display: block; margin-bottom: 5px;"><i data-lucide="ear"></i> DPAC & Audição</strong>
                         <span style="font-size: 0.9rem; background: #eef2f7; padding: 3px 8px; border-radius: 4px;">Pedro na Casa...</span>
-                        <p style="font-size: 0.85rem; margin-top: 8px; color: #666;">Treino auditivo e resolução temporal.</p>
+                        <p style="font-size: 0.85rem; margin-top: 8px; color: #666;">Softwares eficazes no treino auditivo e percepção de fala (SARDA).</p>
                     </div>
                     <div class="content-card" style="padding: 15px;">
-                        <strong style="color: var(--primary); display: block; margin-bottom: 5px;">Audição</strong>
-                        <span style="font-size: 0.9rem; background: #eef2f7; padding: 3px 8px; border-radius: 4px;">SARDA</span>
-                        <p style="font-size: 0.85rem; margin-top: 8px; color: #666;">Percepção de fala no ruído.</p>
-                    </div>
-                    <div class="content-card" style="padding: 15px;">
-                        <strong style="color: var(--primary); display: block; margin-bottom: 5px;">Gagueira</strong>
+                        <strong style="color: var(--primary); display: block; margin-bottom: 5px;"><i data-lucide="mic"></i> Gagueira & Voz</strong>
                         <span style="font-size: 0.9rem; background: #eef2f7; padding: 3px 8px; border-radius: 4px;">SpeechEasy®</span>
-                        <p style="font-size: 0.85rem; margin-top: 8px; color: #666;">Dispositivo AFA melhora fluência.</p>
+                        <p style="font-size: 0.85rem; margin-top: 8px; color: #666;">Dispositivos AFA melhoram fluência. Apps (Q-Voz) auxiliam no treino.</p>
                     </div>
                     <div class="content-card" style="padding: 15px;">
-                        <strong style="color: var(--primary); display: block; margin-bottom: 5px;">Voz</strong>
-                        <span style="font-size: 0.9rem; background: #eef2f7; padding: 3px 8px; border-radius: 4px;">Q-Voz</span>
-                        <p style="font-size: 0.85rem; margin-top: 8px; color: #666;">Autogerenciamento e exercícios.</p>
+                        <strong style="color: var(--primary); display: block; margin-bottom: 5px;"><i data-lucide="smile"></i> Engajamento</strong>
+                        <p style="font-size: 0.85rem; margin-top: 8px; color: #666;">Aumento da motivação infantil, feedback imediato e possibilidade de treino domiciliar intensivo.</p>
                     </div>
                 </div>
 
@@ -789,24 +896,45 @@
                 </div>
 
                 <div class="content-card">
-                    <h4 style="color: var(--primary); margin-bottom: 20px;">Fontes Principais da Revisão</h4>
+                    <h4 style="color: var(--primary); margin-bottom: 20px;">Principais fontes utilizadas na revisão:</h4>
                     <ul style="font-size: 0.95rem; columns: 2; column-gap: 40px; color: #444; line-height: 1.8;">
                         <li>BRASIL. Lei nº 6.965/1981 (Regulamentação da Fonoaudiologia).</li>
                         <li>BRASIL. Lei Geral de Proteção de Dados (LGPD), 2018.</li>
                         <li>CFFa. Resoluções sobre Telefonoaudiologia (2020-2024).</li>
                         <li>FERREIRA, G. Z. et al. (2018). App Fala nova, treino fácil.</li>
-                        <li>FURLONG, L. et al. (2017). Efficacy of Computer-Based Speech Therapy.</li>
+                        <li>FURLONG, L. et al. (2017). Efficacy of CBST.</li>
                         <li>LAMÔNICA, D. A. C. et al. (2017). Tratado de Linguagem.</li>
-                        <li>LAVAISSIÉRI, P.; MELO, P. E. D. (2017). App Terapia Vocal (Q-Voz).</li>
-                        <li>MARTINS, J. S. et al. (2007). Software e DPAC (Pedro na Casa...).</li>
-                        <li>OMS (2016/2019). Estratégias Globais de Saúde Digital.</li>
-                        <li>SILVA, M. P. et al. (2011). Software SARDA e Deficiência Auditiva.</li>
+                        <li>LAVAISSIÉRI, P.; MELO, P. E. D. (2017). App Terapia Vocal.</li>
+                        <li>MARTINS, J. S. et al. (2007). Software e DPAC.</li>
+                        <li>OMS (2016/2019). Estratégias de Saúde Digital.</li>
+                        <li>SILVA, M. P. et al. (2011). Software na Deficiência Auditiva.</li>
                     </ul>
                 </div>
 
                 <div class="nav-controls">
                     <button class="btn-nav btn-prev"><i data-lucide="arrow-left"></i> Anterior</button>
-                    <button class="btn-nav btn-next" disabled>Fim</button>
+                    <button class="btn-nav btn-next">Finalizar <i data-lucide="check"></i></button>
+                </div>
+            </div>
+
+            <div class="slide" id="slide-8">
+                <div class="thank-you-container">
+                    <i class="shape s1" data-lucide="sparkles" size="48"></i>
+                    <i class="shape s2" data-lucide="heart" size="48"></i>
+                    <i class="shape s3" data-lucide="star" size="48"></i>
+                    <i class="shape s4" data-lucide="music" size="48"></i>
+                    
+                    <div class="ty-title">Obrigada!</div>
+                    <div class="ty-subtitle">Agradeço a atenção de todos.</div>
+                    
+                    <div class="content-card" style="display: inline-block; animation: fadeInSlide 1s forwards 0.6s; opacity: 0;">
+                        <h4 style="margin-bottom: 10px; color: var(--primary);">Contato</h4>
+                        <p style="font-size: 1.1rem; font-weight: 600;">Giullia Ferreira Rodrigues</p>
+                        <p style="color: #666;">Fonoaudiologia - PUC Campinas</p>
+                    </div>
+                </div>
+                <div class="nav-controls">
+                    <button class="btn-nav btn-prev"><i data-lucide="arrow-left"></i> Anterior</button>
                 </div>
             </div>
 
@@ -835,7 +963,10 @@
                 
                 // Update Sidebar Active State
                 navItems.forEach(item => {
-                    item.classList.toggle('active', parseInt(item.dataset.slide) === index);
+                    const itemIndex = parseInt(item.dataset.slide);
+                    if (!isNaN(itemIndex)) {
+                        item.classList.toggle('active', itemIndex === index);
+                    }
                 });
 
                 // Scroll Top
@@ -846,7 +977,26 @@
             // Event Listeners: Sidebar
             navItems.forEach(item => {
                 item.addEventListener('click', () => {
-                    updateSlide(parseInt(item.dataset.slide));
+                    const slideIndex = parseInt(item.dataset.slide);
+                    if (!isNaN(slideIndex)) {
+                        updateSlide(slideIndex);
+                    }
+                    
+                    // Handle Sub-item section scrolling
+                    const sectionId = item.dataset.section;
+                    if (sectionId) {
+                         setTimeout(() => {
+                            const sectionElement = document.getElementById(sectionId);
+                            if (sectionElement) {
+                                sectionElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                                // Optional visual cue
+                                sectionElement.style.transition = 'color 0.5s';
+                                const originalColor = sectionElement.style.color;
+                                sectionElement.style.color = 'var(--accent)';
+                                setTimeout(() => { sectionElement.style.color = originalColor; }, 1000);
+                            }
+                        }, 600); // Wait for slide transition
+                    }
                 });
             });
 
