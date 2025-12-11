@@ -3,269 +3,266 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Relatório de Avaliação Audiológica</title>
+    <title>Relatório Audiológico Completo</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        .audiogram-grid {
-            stroke: #e5e7eb;
-            stroke-width: 1;
-        }
-        .audiogram-text {
-            font-size: 10px;
-            fill: #374151;
-        }
-        /* Estilos específicos para impressão */
+        .audiogram-grid { stroke: #e5e7eb; stroke-width: 1; }
         @media print {
             body { background: white; padding: 0; }
-            .shadow-lg { box-shadow: none; }
+            .shadow-lg, .shadow-xl { box-shadow: none; }
             .no-print { display: none; }
+            .page-break { page-break-before: always; }
         }
     </style>
 </head>
-<body class="bg-gray-50 p-4 font-sans text-gray-800">
+<body class="bg-gray-100 p-4 font-sans text-gray-800">
 
-    <div class="max-w-4xl mx-auto bg-white shadow-lg rounded-lg overflow-hidden border border-gray-200">
+    <div class="max-w-4xl mx-auto bg-white shadow-xl rounded-xl overflow-hidden border border-gray-200">
         
         <!-- Cabeçalho -->
-        <div class="bg-slate-800 text-white p-6">
+        <div class="bg-slate-900 text-white p-6">
             <div class="flex justify-between items-start">
                 <div>
-                    <h1 class="text-2xl font-bold uppercase tracking-wider">Avaliação Audiológica</h1>
-                    <p class="text-sm opacity-80 mt-1">Clínica de Fonoaudiologia</p>
+                    <h1 class="text-3xl font-bold uppercase tracking-wide">Avaliação Audiológica</h1>
+                    <p class="text-sm text-slate-400 mt-1">Relatório Clínico Integrado</p>
                 </div>
-                <div class="text-right text-xs opacity-80">
+                <div class="text-right text-xs text-slate-400">
                     <p>Data: 24/05/2024</p>
-                    <p>Ref: #8921-OD</p>
+                    <p>Protocolo: #8921-OD</p>
                 </div>
             </div>
             
-            <div class="mt-6 border-t border-slate-600 pt-4 grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+            <div class="mt-6 pt-4 border-t border-slate-700 grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
                 <div>
-                    <p><span class="font-semibold text-slate-400">Paciente:</span> Sr. João da Silva</p>
-                    <p><span class="font-semibold text-slate-400">Idade:</span> 69 Anos</p>
+                    <p><span class="text-slate-400 font-semibold">Paciente:</span> Sr. João da Silva (69 anos)</p>
+                    <p><span class="text-slate-400 font-semibold">Histórico:</span> Pós-op Mastoidectomia Radical (OD).</p>
                 </div>
                 <div>
-                    <p><span class="font-semibold text-slate-400">Histórico:</span> Pós-op Mastoidectomia Radical (OD).</p>
-                    <p><span class="font-semibold text-slate-400">Queixa:</span> Otorreia fétida (OD), Hipoacusia, Tontura.</p>
+                    <p><span class="text-slate-400 font-semibold">Queixa:</span> Secreção fétida (OD), Tontura, Plenitude (OE).</p>
                 </div>
             </div>
         </div>
 
-        <!-- Área dos Audiogramas e Mascaramento -->
-        <div class="p-6">
-            <h2 class="text-xl font-bold text-gray-800 mb-6 border-l-4 border-slate-800 pl-3">Audiometria Tonal Limiar</h2>
-            
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-4">
+        <!-- Conteúdo Principal -->
+        <div class="p-6 space-y-8">
+
+            <!-- Seção 1: Audiometria Tonal -->
+            <div>
+                <h2 class="text-xl font-bold text-gray-800 mb-4 border-l-4 border-slate-800 pl-3 flex justify-between items-center">
+                    Audiometria Tonal Limiar
+                    <span class="text-xs font-normal bg-gray-200 px-2 py-1 rounded text-gray-600">Transdutores: Supra-aurais</span>
+                </h2>
                 
-                <!-- Orelha Direita -->
-                <div class="flex flex-col items-center">
-                    <div class="flex items-center gap-2 mb-2">
-                        <h3 class="text-lg font-bold text-red-600">Orelha Direita (OD)</h3>
-                        <span class="text-xs bg-red-100 text-red-800 px-2 py-0.5 rounded">Mascarada</span>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <!-- Orelha Direita -->
+                    <div class="flex flex-col items-center">
+                        <div class="flex items-center gap-2 mb-2">
+                            <h3 class="text-lg font-bold text-red-600">Orelha Direita (OD)</h3>
+                            <span class="text-[10px] bg-red-100 text-red-800 px-2 py-0.5 rounded border border-red-200 font-bold">MASCARADA</span>
+                        </div>
+                        <canvas id="canvasOD" width="320" height="320" class="border border-gray-300 bg-white shadow-sm mb-3"></canvas>
+                        
+                        <!-- Mini Tabela Mascaramento -->
+                        <div class="w-full max-w-[320px]">
+                            <p class="text-[10px] font-bold text-gray-500 mb-1">Nível de Mascaramento (dB NB na OE):</p>
+                            <div class="grid grid-cols-6 text-[10px] border border-gray-300 text-center">
+                                <div class="bg-gray-100 font-bold p-1">Hz</div>
+                                <div class="bg-gray-50 p-1">500</div>
+                                <div class="bg-gray-50 p-1">1k</div>
+                                <div class="bg-gray-50 p-1">2k</div>
+                                <div class="bg-gray-50 p-1">3k</div>
+                                <div class="bg-gray-50 p-1">4k</div>
+                                
+                                <div class="bg-gray-100 font-bold p-1 border-t text-red-600">VA</div>
+                                <div class="border-t p-1">40</div>
+                                <div class="border-t p-1">45</div>
+                                <div class="border-t p-1">50</div>
+                                <div class="border-t p-1">50</div>
+                                <div class="border-t p-1">55</div>
+                            </div>
+                        </div>
                     </div>
-                    
-                    <canvas id="canvasOD" width="350" height="350" class="border border-gray-300 bg-white shadow-sm mb-4"></canvas>
-                    
-                    <!-- Tabela Mascaramento OD -->
-                    <table class="w-full text-xs text-center border-collapse">
-                        <tr class="bg-gray-100 text-gray-600">
-                            <td class="p-1 border text-left font-semibold w-20">Freq (Hz)</td>
-                            <td class="p-1 border">500</td>
-                            <td class="p-1 border">1k</td>
-                            <td class="p-1 border">2k</td>
-                            <td class="p-1 border">3k</td>
-                            <td class="p-1 border">4k</td>
-                        </tr>
-                        <tr>
-                            <td class="p-1 border text-left font-semibold text-red-600">Masc. VA (dB)</td>
-                            <td class="p-1 border">40</td>
-                            <td class="p-1 border">45</td>
-                            <td class="p-1 border">50</td>
-                            <td class="p-1 border">50</td>
-                            <td class="p-1 border">55</td>
-                        </tr>
-                        <tr>
-                            <td class="p-1 border text-left font-semibold text-red-600">Masc. VO (dB)</td>
-                            <td class="p-1 border">45</td>
-                            <td class="p-1 border">50</td>
-                            <td class="p-1 border">50</td>
-                            <td class="p-1 border">-</td>
-                            <td class="p-1 border">60</td>
-                        </tr>
-                    </table>
-                    <div class="mt-2 text-xs text-gray-500 w-full text-left">
-                        <span class="mr-2"><span class="text-red-600 font-bold text-base">△</span> = VA Mascarada</span>
-                        <span><span class="text-red-600 font-bold text-base">[</span> = VO Mascarada</span>
-                    </div>
-                </div>
 
-                <!-- Orelha Esquerda -->
-                <div class="flex flex-col items-center">
-                    <div class="flex items-center gap-2 mb-2">
-                        <h3 class="text-lg font-bold text-blue-600">Orelha Esquerda (OE)</h3>
-                        <span class="text-xs bg-blue-100 text-blue-800 px-2 py-0.5 rounded">VO Mascarada</span>
-                    </div>
-                    
-                    <canvas id="canvasOE" width="350" height="350" class="border border-gray-300 bg-white shadow-sm mb-4"></canvas>
-                    
-                    <!-- Tabela Mascaramento OE -->
-                    <table class="w-full text-xs text-center border-collapse">
-                        <tr class="bg-gray-100 text-gray-600">
-                            <td class="p-1 border text-left font-semibold w-20">Freq (Hz)</td>
-                            <td class="p-1 border">500</td>
-                            <td class="p-1 border">1k</td>
-                            <td class="p-1 border">2k</td>
-                            <td class="p-1 border">3k</td>
-                            <td class="p-1 border">4k</td>
-                        </tr>
-                        <tr>
-                            <td class="p-1 border text-left font-semibold text-blue-600">Masc. VA (dB)</td>
-                            <td class="p-1 border">-</td>
-                            <td class="p-1 border">-</td>
-                            <td class="p-1 border">-</td>
-                            <td class="p-1 border">-</td>
-                            <td class="p-1 border">-</td>
-                        </tr>
-                        <tr>
-                            <td class="p-1 border text-left font-semibold text-blue-600">Masc. VO (dB)</td>
-                            <td class="p-1 border">50</td>
-                            <td class="p-1 border">45</td>
-                            <td class="p-1 border">55</td>
-                            <td class="p-1 border">60</td>
-                            <td class="p-1 border">60</td>
-                        </tr>
-                    </table>
-                     <div class="mt-2 text-xs text-gray-500 w-full text-left">
-                        <span class="mr-2"><span class="text-blue-600 font-bold text-base">X</span> = VA (s/ masc)</span>
-                        <span><span class="text-blue-600 font-bold text-base">]</span> = VO Mascarada</span>
+                    <!-- Orelha Esquerda -->
+                    <div class="flex flex-col items-center">
+                        <div class="flex items-center gap-2 mb-2">
+                            <h3 class="text-lg font-bold text-blue-600">Orelha Esquerda (OE)</h3>
+                        </div>
+                        <canvas id="canvasOE" width="320" height="320" class="border border-gray-300 bg-white shadow-sm mb-3"></canvas>
+                         <!-- Mini Tabela Mascaramento -->
+                         <div class="w-full max-w-[320px]">
+                            <p class="text-[10px] font-bold text-gray-500 mb-1">Nível de Mascaramento (dB NB na OD):</p>
+                            <div class="grid grid-cols-6 text-[10px] border border-gray-300 text-center">
+                                <div class="bg-gray-100 font-bold p-1">Hz</div>
+                                <div class="bg-gray-50 p-1">500</div>
+                                <div class="bg-gray-50 p-1">1k</div>
+                                <div class="bg-gray-50 p-1">2k</div>
+                                <div class="bg-gray-50 p-1">3k</div>
+                                <div class="bg-gray-50 p-1">4k</div>
+                                
+                                <div class="bg-gray-100 font-bold p-1 border-t text-blue-600">VO</div>
+                                <div class="border-t p-1">50</div>
+                                <div class="border-t p-1">45</div>
+                                <div class="border-t p-1">55</div>
+                                <div class="border-t p-1">60</div>
+                                <div class="border-t p-1">60</div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
 
-        <!-- Logoaudiometria Detalhada -->
-        <div class="p-6 bg-gray-50 border-t border-gray-200">
-            <h2 class="text-xl font-bold text-gray-800 mb-4 border-l-4 border-slate-800 pl-3">Logoaudiometria</h2>
-            
-            <div class="overflow-x-auto">
-                <table class="w-full text-sm text-left border-collapse bg-white shadow-sm">
-                    <thead>
-                        <tr class="bg-slate-700 text-white">
-                            <th class="p-2 border border-slate-600">Teste</th>
-                            <th class="p-2 border border-slate-600 bg-red-700 text-center" colspan="3">Orelha Direita (OD)</th>
-                            <th class="p-2 border border-slate-600 bg-blue-700 text-center" colspan="3">Orelha Esquerda (OE)</th>
-                        </tr>
-                        <tr class="bg-gray-100 text-xs font-semibold text-gray-700 text-center">
-                            <th class="p-2 border">Tipo</th>
-                            <th class="p-2 border">Intensidade</th>
-                            <th class="p-2 border">Mascaramento</th>
-                            <th class="p-2 border">% Acertos</th>
-                            <th class="p-2 border">Intensidade</th>
-                            <th class="p-2 border">Mascaramento</th>
-                            <th class="p-2 border">% Acertos</th>
-                        </tr>
-                    </thead>
-                    <tbody class="text-center">
-                        <tr>
-                            <td class="p-2 border font-bold text-left">SRT</td>
-                            <td class="p-2 border">50 dB NA</td>
-                            <td class="p-2 border text-gray-500">-</td>
-                            <td class="p-2 border bg-gray-50">Limiar</td>
-                            <td class="p-2 border">40 dB NA</td>
-                            <td class="p-2 border text-gray-500">-</td>
-                            <td class="p-2 border bg-gray-50">Limiar</td>
-                        </tr>
-                        <tr>
-                            <td class="p-2 border font-bold text-left">IPRF (Mono)</td>
-                            <td class="p-2 border font-bold text-red-600">90 dB NA</td>
-                            <td class="p-2 border text-red-600 font-semibold">60 dB (OE)</td>
-                            <td class="p-2 border font-bold">88%</td>
-                            <td class="p-2 border font-bold text-blue-600">80 dB NA</td>
-                            <td class="p-2 border text-blue-600 font-semibold">55 dB (OD)</td>
-                            <td class="p-2 border font-bold">100%</td>
-                        </tr>
-                    </tbody>
-                </table>
+            <!-- Seção 2: Logoaudiometria -->
+            <div class="bg-slate-50 p-4 rounded-lg border border-slate-200">
+                <h2 class="text-lg font-bold text-gray-800 mb-3 flex items-center gap-2">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z"></path></svg>
+                    Logoaudiometria
+                </h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <!-- OD -->
+                    <div class="border-l-4 border-red-500 pl-3">
+                        <h4 class="text-sm font-bold text-red-700 uppercase mb-1">Orelha Direita</h4>
+                        <div class="grid grid-cols-2 gap-x-4 text-sm">
+                            <div class="text-gray-600">SRT:</div>
+                            <div class="font-bold">50 dB</div>
+                            <div class="text-gray-600">IPRF (Mono):</div>
+                            <div class="font-bold">88% <span class="text-xs font-normal text-gray-500">(a 90dB)</span></div>
+                            <div class="text-gray-600 text-xs mt-1">Mascaramento:</div>
+                            <div class="text-xs mt-1 text-red-600">60 dB Speech Noise</div>
+                        </div>
+                    </div>
+                    <!-- OE -->
+                    <div class="border-l-4 border-blue-500 pl-3">
+                        <h4 class="text-sm font-bold text-blue-700 uppercase mb-1">Orelha Esquerda</h4>
+                        <div class="grid grid-cols-2 gap-x-4 text-sm">
+                            <div class="text-gray-600">SRT:</div>
+                            <div class="font-bold">40 dB</div>
+                            <div class="text-gray-600">IPRF (Mono):</div>
+                            <div class="font-bold">100% <span class="text-xs font-normal text-gray-500">(a 80dB)</span></div>
+                            <div class="text-gray-600 text-xs mt-1">Mascaramento:</div>
+                            <div class="text-xs mt-1 text-blue-600">55 dB Speech Noise</div>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <p class="mt-2 text-xs text-gray-500 italic">* Mascaramento utilizado: Speech Noise. Valores de mascaramento calculados com base no método Plateau/Hood.</p>
-        </div>
 
-        <!-- Imitanciometria -->
-        <div class="p-6 border-t border-gray-200">
-             <h2 class="text-xl font-bold text-gray-800 mb-4 border-l-4 border-slate-800 pl-3">Imitanciometria</h2>
-             <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                <!-- Gráficos -->
-                 <div class="flex flex-col items-center">
-                    <canvas id="canvasTympOD" width="300" height="150" class="border border-gray-300 bg-white mb-2"></canvas>
-                    <p class="text-xs font-bold text-red-600">OD: Curva Aberta (Volume Alto)</p>
-                 </div>
-                 <div class="flex flex-col items-center">
-                    <canvas id="canvasTympOE" width="300" height="150" class="border border-gray-300 bg-white mb-2"></canvas>
-                    <p class="text-xs font-bold text-blue-600">OE: Curva Tipo B (Líquido)</p>
-                 </div>
-             </div>
-             
-             <div class="mt-4 grid grid-cols-2 gap-4 text-sm bg-gray-50 p-4 rounded">
+            <!-- Seção 3: Imitanciometria -->
+            <div>
+                <h2 class="text-xl font-bold text-gray-800 mb-4 border-l-4 border-slate-800 pl-3">Imitanciometria</h2>
+                <div class="flex flex-col md:flex-row gap-6 items-end">
+                    <div class="flex-1 flex flex-col items-center">
+                        <canvas id="canvasTympOD" width="280" height="150" class="border border-gray-300 bg-white mb-2"></canvas>
+                        <p class="text-xs font-bold text-red-600">OD: Volume Alto / Curva Aberta</p>
+                    </div>
+                    <div class="flex-1 flex flex-col items-center">
+                        <canvas id="canvasTympOE" width="280" height="150" class="border border-gray-300 bg-white mb-2"></canvas>
+                        <p class="text-xs font-bold text-blue-600">OE: Curva Tipo B (Líquido)</p>
+                    </div>
+                </div>
+                <div class="mt-2 text-center text-sm text-gray-500 bg-gray-50 py-2 rounded">
+                    Reflexos Estapedianos Contralaterais: <strong>Ausentes Bilateralmente</strong>
+                </div>
+            </div>
+
+            <!-- Seção 4: Conclusão Detalhada -->
+            <div class="bg-slate-50 border border-slate-200 rounded-lg p-6 print:break-inside-avoid">
+                <h3 class="text-lg font-bold text-slate-900 mb-6 flex items-center gap-2 pb-2 border-b border-slate-300">
+                    Conclusão e Justificativa Clínica
+                </h3>
+
+                <!-- Parte 1: Justificativa do Mascaramento -->
+                <div class="mb-6">
+                    <h4 class="font-bold text-slate-800 text-sm mb-2 uppercase tracking-wide">1. Por que realizamos o Mascaramento?</h4>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div class="bg-white p-3 rounded border border-gray-200 shadow-sm">
+                            <p class="text-sm font-semibold text-red-700 mb-1">Na Via Aérea da Orelha Direita (OD)</p>
+                            <p class="text-xs text-gray-600 text-justify leading-relaxed">
+                                <strong>O Problema:</strong> Ao apresentar sons na OD (orelha pior) em intensidades acima de 50dB, o som vibra o crânio e chega à cóclea da OE (orelha melhor, com limiar ósseo de 10-15dB). A diferença entre a intensidade do estímulo e o limiar ósseo oposto ultrapassou a atenuação interaural (40dB).
+                                <br><br>
+                                <strong>A Solução:</strong> Aplicamos ruído na OE para "ocupar" a cóclea esquerda, garantindo que a resposta obtida viesse exclusivamente da orelha direita.
+                            </p>
+                        </div>
+                        <div class="bg-white p-3 rounded border border-gray-200 shadow-sm">
+                            <p class="text-sm font-semibold text-blue-700 mb-1">Na Via Óssea (Bilateral)</p>
+                            <p class="text-xs text-gray-600 text-justify leading-relaxed">
+                                <strong>O Problema:</strong> Ambas as orelhas apresentaram <strong>Gap Aéreo-Ósseo</strong> (diferença entre o som ouvido pelo fone e pelo vibrador ósseo) maior que 10-15dB.
+                                <br><br>
+                                <strong>A Solução:</strong> O mascaramento na via óssea é obrigatório sempre que há gaps, para confirmar que a reserva coclear (nervo) está realmente preservada e diferenciar uma perda condutiva de uma neurossensorial ou mista.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Parte 2: Explicação dos Laudos -->
+                <div class="mb-6">
+                    <h4 class="font-bold text-slate-800 text-sm mb-2 uppercase tracking-wide">2. Entendendo o Diagnóstico (Laudo)</h4>
+                    <ul class="space-y-3">
+                        <li class="flex gap-3 items-start bg-white p-3 rounded border border-gray-200">
+                            <span class="font-bold text-red-600 whitespace-nowrap text-sm">OD: Perda Mista</span>
+                            <p class="text-xs text-gray-700 text-justify">
+                                Significa que existem dois problemas somados: uma barreira física impedindo o som de entrar (devido à cirurgia de mastoidectomia radical, onde não há tímpano íntegro para amplificar o som) <strong>E</strong> um desgaste no nervo auditivo (cóclea), comum em casos de infecção crônica e idade (69 anos).
+                            </p>
+                        </li>
+                        <li class="flex gap-3 items-start bg-white p-3 rounded border border-gray-200">
+                            <span class="font-bold text-blue-600 whitespace-nowrap text-sm">OE: Perda Condutiva</span>
+                            <p class="text-xs text-gray-700 text-justify">
+                                A cóclea (nervo) está funcionando perfeitamente (via óssea normal), mas o som não chega até ela com força total. O bloqueio é puramente mecânico, causado pela presença de secreção (líquido) na orelha média, o que amortece a vibração sonora.
+                            </p>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Parte 3: Curvas de Imitanciometria -->
                 <div>
-                    <span class="font-bold text-red-600">Reflexos OD:</span> Ausentes
+                    <h4 class="font-bold text-slate-800 text-sm mb-2 uppercase tracking-wide">3. O que as Curvas nos dizem?</h4>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div class="p-3 bg-red-50 rounded border border-red-100">
+                            <p class="font-bold text-xs text-red-800 mb-1">OD: Curva Aberta (Volume Alto)</p>
+                            <p class="text-[10px] text-gray-700">
+                                Indica que o canal auditivo é enorme. Isso é esperado e confirma o histórico de <strong>Mastoidectomia Radical</strong> (onde as células da mastoide foram removidas, criando uma cavidade única).
+                            </p>
+                        </div>
+                        <div class="p-3 bg-blue-50 rounded border border-blue-100">
+                            <p class="font-bold text-xs text-blue-800 mb-1">OE: Curva Tipo B</p>
+                            <p class="text-[10px] text-gray-700">
+                                É uma linha plana que indica que o tímpano não está se movendo. Diferente da OD, aqui o volume é normal, o que sugere que o tímpano está íntegro, mas travado por <strong>líquido (otite média serosa)</strong> atrás dele.
+                            </p>
+                        </div>
+                    </div>
                 </div>
-                <div>
-                    <span class="font-bold text-blue-600">Reflexos OE:</span> Ausentes
-                </div>
-             </div>
-        </div>
 
-        <!-- Laudo Final -->
-        <div class="p-6 border-t-2 border-gray-300 bg-yellow-50">
-            <h3 class="text-lg font-bold text-gray-900 mb-3 uppercase">Conclusão Diagnóstica</h3>
-            
-            <div class="mb-4 pl-4 border-l-4 border-red-500">
-                <h4 class="font-bold text-red-800">Orelha Direita (OD)</h4>
-                <p class="text-gray-800"><strong>Perda Auditiva Mista de Grau Moderado.</strong></p>
-                <p class="text-sm text-gray-600 mt-1">Curva timpanométrica compatível com cavidade radical. Ausência de reflexos estapedianos. Quadro compatível com histórico de mastoidectomia e provável recidiva de processo infeccioso (colesteatoma).</p>
             </div>
 
-            <div class="pl-4 border-l-4 border-blue-500">
-                <h4 class="font-bold text-blue-800">Orelha Esquerda (OE)</h4>
-                <p class="text-gray-800"><strong>Perda Auditiva Condutiva de Grau Leve.</strong></p>
-                <p class="text-sm text-gray-600 mt-1">Curva timpanométrica Tipo B (Jerger). Ausência de reflexos estapedianos. Quadro sugestivo de Otite Média Secretora por disfunção tubária.</p>
-            </div>
         </div>
     </div>
 
+    <!-- Scripts de desenho (Canvas) -->
     <script>
-        // --- CONFIGURAÇÃO E DADOS ---
         const freqs = [250, 500, 1000, 2000, 3000, 4000, 6000, 8000];
         
-        // Dados com indicação de mascaramento para o desenho
-        // isMaskedVA: boolean array, isMaskedVO: boolean array
         const dataOD = {
             va: [55, 50, 45, 40, 60, 65, 55, 60],
             vo: [null, 25, 20, 30, 35, 45, null, null],
-            vaMasked: true, // Usar símbolo de mascaramento na VA
-            voMasked: true  // Usar símbolo de mascaramento na VO
+            vaMasked: true, voMasked: true
         };
 
         const dataOE = {
             va: [30, 35, 40, 35, 30, 25, 45, 40],
             vo: [null, 10, 15, 5, 15, 15, null, null],
-            vaMasked: false, // VA sem mascaramento
-            voMasked: true   // VO com mascaramento
+            vaMasked: false, voMasked: true
         };
 
-        // --- FUNÇÃO DE DESENHO AUDIOGRAMA ---
         function drawAudiogram(canvasId, data, isRight) {
             const canvas = document.getElementById(canvasId);
             const ctx = canvas.getContext('2d');
             const width = canvas.width;
             const height = canvas.height;
-            const padding = 40;
+            const padding = 30;
             
-            // Limpar
+            // Background
             ctx.fillStyle = "white";
             ctx.fillRect(0, 0, width, height);
 
-            // Escalas
             const xStep = (width - 2 * padding) / (freqs.length - 1);
             const yStep = (height - 2 * padding) / 13; 
 
@@ -274,120 +271,60 @@
             ctx.strokeStyle = "#e5e7eb";
             ctx.lineWidth = 1;
             
-            // Frequências
             freqs.forEach((f, i) => {
                 const x = padding + i * xStep;
-                ctx.moveTo(x, padding);
-                ctx.lineTo(x, height - padding);
-                ctx.fillStyle = "#374151";
-                ctx.font = "10px Arial";
-                ctx.textAlign = "center";
-                ctx.fillText(f >= 1000 ? f/1000 + 'k' : f, x, padding - 10);
+                ctx.moveTo(x, padding); ctx.lineTo(x, height - padding);
+                ctx.fillStyle = "#6b7280"; ctx.font = "9px Arial"; ctx.textAlign = "center";
+                ctx.fillText(f >= 1000 ? f/1000 + 'k' : f, x, padding - 8);
             });
 
-            // dB
             for (let db = -10; db <= 120; db += 10) {
                 const y = padding + ((db + 10) / 10) * yStep;
-                ctx.moveTo(padding, y);
-                ctx.lineTo(width - padding, y);
-                ctx.fillStyle = "#374151";
-                ctx.font = "10px Arial";
-                ctx.textAlign = "right";
-                ctx.fillText(db, padding - 10, y + 3);
+                ctx.moveTo(padding, y); ctx.lineTo(width - padding, y);
+                ctx.fillStyle = "#6b7280"; ctx.font = "9px Arial"; ctx.textAlign = "right";
+                ctx.fillText(db, padding - 5, y + 3);
             }
             ctx.stroke();
 
-            const color = isRight ? "#dc2626" : "#2563eb"; // Red-600 / Blue-600
-
+            const color = isRight ? "#dc2626" : "#2563eb";
             const getX = (i) => padding + i * xStep;
             const getY = (db) => padding + ((db + 10) / 10) * yStep;
 
-            // 1. DESENHAR LINHAS (VA)
+            // Linhas
             ctx.beginPath();
             ctx.strokeStyle = color;
             ctx.lineWidth = 2;
             let first = true;
             data.va.forEach((db, i) => {
                 if (db !== null) {
-                    const x = getX(i);
-                    const y = getY(db);
-                    if (first) { ctx.moveTo(x, y); first = false; }
-                    else { ctx.lineTo(x, y); }
+                    const x = getX(i); const y = getY(db);
+                    if (first) { ctx.moveTo(x, y); first = false; } else { ctx.lineTo(x, y); }
                 }
             });
             ctx.stroke();
 
-            // 2. DESENHAR SÍMBOLOS VA
+            // Símbolos
             data.va.forEach((db, i) => {
                 if (db !== null) {
-                    const x = getX(i);
-                    const y = getY(db);
-                    ctx.beginPath();
-                    ctx.strokeStyle = color;
-                    ctx.lineWidth = 2;
-                    
-                    if (isRight) {
-                        if (data.vaMasked) {
-                            // Triângulo (Mascarado OD)
-                            ctx.moveTo(x, y - 5);
-                            ctx.lineTo(x + 5, y + 5);
-                            ctx.lineTo(x - 5, y + 5);
-                            ctx.closePath();
-                        } else {
-                            // Círculo (Simples OD)
-                            ctx.arc(x, y, 4, 0, 2 * Math.PI);
-                        }
-                    } else {
-                        if (data.vaMasked) {
-                            // Quadrado (Mascarado OE)
-                            ctx.rect(x-4, y-4, 8, 8);
-                        } else {
-                            // X (Simples OE)
-                            ctx.moveTo(x - 4, y - 4);
-                            ctx.lineTo(x + 4, y + 4);
-                            ctx.moveTo(x + 4, y - 4);
-                            ctx.lineTo(x - 4, y + 4);
-                        }
+                    const x = getX(i); const y = getY(db);
+                    ctx.beginPath(); ctx.strokeStyle = color; ctx.lineWidth = 2;
+                    if (isRight) { // Triângulo (Mascarado)
+                        ctx.moveTo(x, y - 5); ctx.lineTo(x + 5, y + 4); ctx.lineTo(x - 5, y + 4); ctx.closePath();
+                    } else { // X (Simples)
+                        ctx.moveTo(x - 4, y - 4); ctx.lineTo(x + 4, y + 4); ctx.moveTo(x + 4, y - 4); ctx.lineTo(x - 4, y + 4);
                     }
                     ctx.stroke();
                 }
             });
 
-            // 3. DESENHAR SÍMBOLOS VO
             data.vo.forEach((db, i) => {
                 if (db !== null) {
-                    const x = getX(i) + (isRight ? 8 : -8); // Deslocar para não sobrepor
-                    const y = getY(db);
-                    ctx.beginPath();
-                    ctx.strokeStyle = color;
-                    ctx.lineWidth = 2;
-                    
-                    if (isRight) {
-                        if (data.voMasked) {
-                            // [ (Mascarado OD)
-                            ctx.moveTo(x + 3, y - 6);
-                            ctx.lineTo(x - 3, y - 6);
-                            ctx.lineTo(x - 3, y + 6);
-                            ctx.lineTo(x + 3, y + 6);
-                        } else {
-                            // < (Simples OD)
-                            ctx.moveTo(x + 4, y - 5);
-                            ctx.lineTo(x - 2, y);
-                            ctx.lineTo(x + 4, y + 5);
-                        }
-                    } else {
-                        if (data.voMasked) {
-                            // ] (Mascarado OE)
-                            ctx.moveTo(x - 3, y - 6);
-                            ctx.lineTo(x + 3, y - 6);
-                            ctx.lineTo(x + 3, y + 6);
-                            ctx.lineTo(x - 3, y + 6);
-                        } else {
-                            // > (Simples OE)
-                            ctx.moveTo(x - 4, y - 5);
-                            ctx.lineTo(x + 2, y);
-                            ctx.lineTo(x - 4, y + 5);
-                        }
+                    const x = getX(i) + (isRight ? 6 : -6); const y = getY(db);
+                    ctx.beginPath(); ctx.strokeStyle = color; ctx.lineWidth = 2;
+                    if (isRight) { // [
+                        ctx.moveTo(x + 3, y - 6); ctx.lineTo(x - 3, y - 6); ctx.lineTo(x - 3, y + 6); ctx.lineTo(x + 3, y + 6);
+                    } else { // ]
+                        ctx.moveTo(x - 3, y - 6); ctx.lineTo(x + 3, y - 6); ctx.lineTo(x + 3, y + 6); ctx.lineTo(x - 3, y + 6);
                     }
                     ctx.stroke();
                 }
@@ -397,71 +334,38 @@
         drawAudiogram('canvasOD', dataOD, true);
         drawAudiogram('canvasOE', dataOE, false);
 
-        // --- FUNÇÃO DE DESENHO TIMPANOMETRIA ---
+        // Timpanometria
         function drawTympanogram(canvasId, type, color) {
             const canvas = document.getElementById(canvasId);
             const ctx = canvas.getContext('2d');
             const width = canvas.width;
             const height = canvas.height;
-            const pX = 30; 
-            const pY = 20; 
+            const pX = 20; const pY = 15;
 
-            // Limpar
-            ctx.fillStyle = "white";
-            ctx.fillRect(0, 0, width, height);
+            ctx.fillStyle = "white"; ctx.fillRect(0, 0, width, height);
 
-            // Escala e Grid
             const xMin = -400, xMax = 200;
-            const yMin = 0, yMax = 2.0;
-            const plotW = width - 2 * pX;
-            const plotH = height - 2 * pY;
+            const mapX = (val) => pX + ((val - xMin) / (xMax - xMin)) * (width - 2 * pX);
+            const mapY = (val) => (height - pY) - (val / 2.0) * (height - 2 * pY);
 
-            const mapX = (val) => pX + ((val - xMin) / (xMax - xMin)) * plotW;
-            const mapY = (val) => (height - pY) - ((val - yMin) / (yMax - yMin)) * plotH;
-
-            // Grid simples
-            ctx.beginPath();
-            ctx.strokeStyle = "#f3f4f6";
-            ctx.lineWidth = 1;
-            for(let p = -400; p <= 200; p += 100) {
-                const x = mapX(p);
-                ctx.moveTo(x, pY); ctx.lineTo(x, height - pY);
-            }
-            ctx.stroke();
-            
             // Eixos
-            ctx.beginPath();
-            ctx.strokeStyle = "#9ca3af";
-            ctx.moveTo(pX, height - pY); ctx.lineTo(width - pX, height - pY); // X axis
-            ctx.moveTo(pX, pY); ctx.lineTo(pX, height - pY); // Y axis
+            ctx.beginPath(); ctx.strokeStyle = "#e5e7eb"; ctx.lineWidth = 1;
+            ctx.moveTo(pX, height-pY); ctx.lineTo(width-pX, height-pY);
+            ctx.moveTo(mapX(0), pY); ctx.lineTo(mapX(0), height-pY);
             ctx.stroke();
 
-            // Desenhar Curva
-            ctx.beginPath();
-            ctx.strokeStyle = color;
-            ctx.lineWidth = 2;
-
+            // Curva
+            ctx.beginPath(); ctx.strokeStyle = color; ctx.lineWidth = 2;
             for (let p = -400; p <= 200; p += 5) {
-                let c = 0;
-                if (type === 'B') {
-                    // Tipo B: Leve ondulação em 0.1-0.2
-                    c = 0.15 + Math.sin(p/100) * 0.02;
-                } else {
-                    // Tipo Aberta: Muito baixo, quase zero
-                    c = 0.05 + Math.random() * 0.01;
-                }
-                
-                const x = mapX(p);
-                const y = mapY(c);
-                if (p === -400) ctx.moveTo(x, y);
-                else ctx.lineTo(x, y);
+                let c = (type === 'B') ? 0.2 + Math.sin(p/100)*0.02 : 0.05 + Math.random()*0.01;
+                const x = mapX(p); const y = mapY(c);
+                if (p === -400) ctx.moveTo(x, y); else ctx.lineTo(x, y);
             }
             ctx.stroke();
         }
 
         drawTympanogram('canvasTympOD', 'Open', '#dc2626');
         drawTympanogram('canvasTympOE', 'B', '#2563eb');
-
     </script>
 </body>
 </html>
