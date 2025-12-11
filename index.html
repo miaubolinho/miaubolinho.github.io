@@ -151,8 +151,9 @@
                 <h2 class="text-xl font-bold text-gray-800 mb-4 border-l-4 border-slate-800 pl-3">Imitanciometria</h2>
                 <div class="flex flex-col md:flex-row gap-6 items-end">
                     <div class="flex-1 flex flex-col items-center">
-                        <canvas id="canvasTympOD" width="280" height="150" class="border border-gray-300 bg-white mb-2"></canvas>
-                        <p class="text-xs font-bold text-red-600">OD: Volume Alto / Curva Aberta</p>
+                        <!-- Canvas OD agora será "Não Testado" -->
+                        <canvas id="canvasTympOD" width="280" height="150" class="border border-gray-300 bg-gray-50 mb-2"></canvas>
+                        <p class="text-xs font-bold text-red-600">OD: Não Realizado / Cavidade Radical</p>
                     </div>
                     <div class="flex-1 flex flex-col items-center">
                         <canvas id="canvasTympOE" width="280" height="150" class="border border-gray-300 bg-white mb-2"></canvas>
@@ -199,9 +200,12 @@
                     <ul class="space-y-3">
                         <li class="flex gap-3 items-start bg-white p-3 rounded border border-gray-200">
                             <span class="font-bold text-red-600 whitespace-nowrap text-sm">OD: Perda Mista</span>
-                            <p class="text-xs text-gray-700 text-justify">
-                                Significa que existem dois problemas somados: uma barreira física impedindo o som de entrar (devido à cirurgia de mastoidectomia radical, onde não há tímpano íntegro para amplificar o som) <strong>E</strong> um desgaste no nervo auditivo (cóclea), comum em casos de infecção crônica e idade (69 anos).
-                            </p>
+                            <div class="text-xs text-gray-700 text-justify">
+                                <p class="mb-2">Significa que existem dois problemas somados: uma barreira física impedindo o som de entrar (devido à cirurgia de mastoidectomia radical) <strong>E</strong> um desgaste no nervo auditivo.</p>
+                                <p class="font-semibold text-red-800 bg-red-50 p-2 rounded border border-red-100">
+                                    HIPÓTESE DIAGNÓSTICA: A associação da otorreia fétida (secreção com mau cheiro), tontura e histórico cirúrgico sugere fortemente a <strong>Recidiva de Colesteatoma</strong> ou infecção ativa na cavidade mastóidea.
+                                </p>
+                            </div>
                         </li>
                         <li class="flex gap-3 items-start bg-white p-3 rounded border border-gray-200">
                             <span class="font-bold text-blue-600 whitespace-nowrap text-sm">OE: Perda Condutiva</span>
@@ -217,9 +221,9 @@
                     <h4 class="font-bold text-slate-800 text-sm mb-2 uppercase tracking-wide">3. O que as Curvas nos dizem?</h4>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div class="p-3 bg-red-50 rounded border border-red-100">
-                            <p class="font-bold text-xs text-red-800 mb-1">OD: Curva Aberta (Volume Alto)</p>
+                            <p class="font-bold text-xs text-red-800 mb-1">OD: Não Realizado</p>
                             <p class="text-[10px] text-gray-700">
-                                Indica que o canal auditivo é enorme. Isso é esperado e confirma o histórico de <strong>Mastoidectomia Radical</strong> (onde as células da mastoide foram removidas, criando uma cavidade única).
+                                <strong>Não há curva timpanométrica.</strong> Devido à Mastoidectomia Radical, o conduto auditivo se une à cavidade da mastoide, criando um volume de ar excessivo. O equipamento não consegue vedar ou pressurizar essa cavidade gigante, impossibilitando o traçado gráfico.
                             </p>
                         </div>
                         <div class="p-3 bg-blue-50 rounded border border-blue-100">
@@ -342,6 +346,28 @@
             const height = canvas.height;
             const pX = 20; const pY = 15;
 
+            // Se for "Skipped" (Não realizado), desenhar apenas aviso
+            if (type === 'Skipped') {
+                ctx.fillStyle = "#f9fafb"; // cinza claro
+                ctx.fillRect(0, 0, width, height);
+                
+                // Desenhar X ou aviso
+                ctx.beginPath();
+                ctx.strokeStyle = "#e5e7eb";
+                ctx.lineWidth = 1;
+                ctx.moveTo(0,0); ctx.lineTo(width, height);
+                ctx.moveTo(width,0); ctx.lineTo(0, height);
+                ctx.stroke();
+
+                ctx.fillStyle = "#991b1b"; // vermelho escuro
+                ctx.font = "bold 14px Arial";
+                ctx.textAlign = "center";
+                ctx.fillText("NÃO REALIZADO", width/2, height/2 - 10);
+                ctx.font = "12px Arial";
+                ctx.fillText("(Volume Excessivo)", width/2, height/2 + 10);
+                return;
+            }
+
             ctx.fillStyle = "white"; ctx.fillRect(0, 0, width, height);
 
             const xMin = -400, xMax = 200;
@@ -357,14 +383,16 @@
             // Curva
             ctx.beginPath(); ctx.strokeStyle = color; ctx.lineWidth = 2;
             for (let p = -400; p <= 200; p += 5) {
-                let c = (type === 'B') ? 0.2 + Math.sin(p/100)*0.02 : 0.05 + Math.random()*0.01;
+                // Tipo B (Linha plana)
+                let c = 0.2 + Math.sin(p/100)*0.02;
                 const x = mapX(p); const y = mapY(c);
                 if (p === -400) ctx.moveTo(x, y); else ctx.lineTo(x, y);
             }
             ctx.stroke();
         }
 
-        drawTympanogram('canvasTympOD', 'Open', '#dc2626');
+        // Alterado para 'Skipped' na OD
+        drawTympanogram('canvasTympOD', 'Skipped', '#dc2626');
         drawTympanogram('canvasTympOE', 'B', '#2563eb');
     </script>
 </body>
