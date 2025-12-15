@@ -367,13 +367,24 @@
         </header>
 
         <div class="video-wrapper">
-            <iframe width="560" height="315" src="https://www.youtube.com/embed/YO6CwDTaeSo?si=CZ4J6NmY_ru12pqI" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+            <!-- 
+                PLAYER DO GOOGLE DRIVE 
+                Link original: https://drive.google.com/file/d/1ulvBjNpiICSGxCmVXK8tNdLZgdfcoiGM/view?usp=drive_link
+                Link modificado para /preview para funcionar o player
+            -->
+            <iframe 
+                src="https://drive.google.com/file/d/1ulvBjNpiICSGxCmVXK8tNdLZgdfcoiGM/preview" 
+                width="640" 
+                height="480" 
+                allow="autoplay"
+                style="border: none;">
+            </iframe>
         </div>
 
         <!-- Link de Fallback: Aparece caso o embed falhe -->
         <div class="video-fallback">
-            <a href="https://youtu.be/YO6CwDTaeSo" target="_blank" rel="noopener noreferrer">
-                O player não abriu? Clique aqui para assistir no YouTube ↗
+            <a href="https://drive.google.com/file/d/1ulvBjNpiICSGxCmVXK8tNdLZgdfcoiGM/view?usp=drive_link" target="_blank" rel="noopener noreferrer">
+                O player não abriu? Clique aqui para assistir no Google Drive ↗
             </a>
         </div>
 
