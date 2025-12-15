@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Epílogo | Despedida</title>
     <style>
-        /* Adicionando a fonte Pinyon Script para a assinatura */
         @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,400&family=Montserrat:wght@200;300;400&family=Pinyon+Script&display=swap');
         @import url('https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700&display=swap');
 
@@ -81,14 +80,18 @@
             letter-spacing: 0.05em;
         }
 
+        /* Moldura do YouTube Responsiva */
         .video-wrapper {
             position: relative;
+            width: 100%;
+            padding-bottom: 56.25%; /* Proporção 16:9 */
+            height: 0;
             background: var(--card-bg);
             border: 1px solid var(--border);
-            padding: 15px;
             box-shadow: 0 10px 40px rgba(0, 0, 0, 0.9);
             transition: border-color 0.8s ease, transform 0.8s ease;
             margin-bottom: 40px;
+            overflow: hidden;
         }
 
         .video-wrapper:hover {
@@ -96,12 +99,15 @@
             transform: translateY(-2px);
         }
 
-        video {
+        .video-wrapper iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
             width: 100%;
-            height: auto;
-            display: block;
+            height: 100%;
+            border: 0;
+            /* Filtro mantido para preservar a estética */
             filter: sepia(15%) contrast(95%) brightness(90%);
-            background-color: #000;
         }
 
         .dedication {
@@ -153,7 +159,7 @@
         }
 
         .secret-btn:hover {
-            color: #5a1a25; /* Um leve tom de vinho ao passar o mouse */
+            color: #5a1a25;
             text-shadow: 0 0 5px #5a1a25;
         }
 
@@ -170,7 +176,6 @@
             opacity: 0;
             visibility: hidden;
             transition: opacity 1.5s ease-in-out, visibility 1.5s;
-            /* MUDANÇA: O scroll agora é controlado aqui para evitar cortes */
             overflow-y: auto; 
             display: block; 
         }
@@ -181,10 +186,9 @@
         }
 
         .scroll-container {
-            /* MUDANÇA: min-height garante que centralize se for pequeno, mas estique se for grande */
             min-height: 100%;
             width: 100%;
-            padding: 60px 20px; /* Espaço extra em cima e embaixo para não colar nas bordas */
+            padding: 60px 20px;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -198,26 +202,20 @@
             position: relative;
             padding: 60px 40px; 
             
-            /* Efeito de Moldura Elaborada */
-            border: 3px solid var(--gold-pale); /* Borda um pouco mais grossa */
+            border: 3px solid var(--gold-pale);
             outline: 1px solid var(--gold-pale);
-            outline-offset: -12px; /* Ajuste para ficar mais elegante */
+            outline-offset: -12px;
             
             box-shadow: 
                 0 0 50px rgba(0,0,0,0.9), 
                 inset 0 0 80px rgba(26, 5, 5, 0.9); 
             
-            background: rgba(26, 5, 5, 0.95); /* Fundo mais opaco para leitura */
+            background: rgba(26, 5, 5, 0.95);
             backdrop-filter: blur(5px);
-            
-            /* Garante que o container abrace todo o conteúdo */
             height: auto; 
             box-sizing: border-box;
         }
 
-        /* Decoração extra nos cantos (pseudo-elementos opcional, mas o outline já resolve bem) */
-        
-        /* Lua decorativa no topo do poema */
         .moon-icon {
             font-size: 3rem;
             margin-bottom: 20px;
@@ -255,7 +253,6 @@
             text-transform: uppercase;
             letter-spacing: 3px;
             opacity: 0.8;
-            /* Alterado: Removemos o alinhamento total à direita para centralizar o texto padrão */
             width: 100%;
             text-align: center;
         }
@@ -270,8 +267,6 @@
             letter-spacing: normal;
             opacity: 1;
             text-shadow: 0 0 8px rgba(230, 203, 179, 0.4);
-            
-            /* Alterado: Apenas o nome vai para a direita */
             text-align: right;
             display: block; 
         }
@@ -292,12 +287,8 @@
             z-index: 10;
         }
 
-        .close-btn:hover { 
-            opacity: 1; 
-            transform: scale(1.1);
-        }
+        .close-btn:hover { opacity: 1; transform: scale(1.1); }
 
-        /* Partículas (Velas/Fagulhas) */
         .particles {
             position: absolute;
             top: 0; left: 0; width: 100%; height: 100%;
@@ -337,7 +328,6 @@
             h1 { font-size: 2.2rem; }
             .container { width: 95%; }
             .dedication { text-align: left; padding: 0 15px; }
-            /* Ajuste da moldura no mobile */
             .poem-container { 
                 padding: 30px 20px; 
                 outline-offset: -6px;
@@ -358,13 +348,22 @@
         </header>
 
         <div class="video-wrapper">
-            <video controls preload="metadata">
-                <source src="video_despedida.mp4" type="video/mp4">
-                <p style="color: #444; padding: 20px;">
-                    Seu navegador não suporta a exibição deste vídeo.<br>
-                    É como se a memória tivesse se perdido.
-                </p>
-            </video>
+            <!-- 
+                INSTRUÇÃO:
+                Substitua o link abaixo pelo link de incorporação do seu vídeo.
+                Exemplo: Se seu vídeo é https://www.youtube.com/watch?v=dQw4w9WgXcQ
+                O ID é dQw4w9WgXcQ.
+                O src deve ficar: https://www.youtube.com/embed/dQw4w9WgXcQ
+            -->
+            <iframe 
+                width="560" 
+                height="315" 
+                src="https://www.youtube.com/embed/SEU_VIDEO_ID" 
+                title="YouTube video player" 
+                frameborder="0" 
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                allowfullscreen>
+            </iframe>
         </div>
 
         <div class="dedication">
@@ -378,7 +377,6 @@
 
         <footer>
             <span>2021 — 2025</span>
-            <!-- O Segredo: Botão para o Pacto -->
             <button class="secret-btn" onclick="toggleSecret()" title="Um segredo...">☾</button>
         </footer>
 
@@ -386,7 +384,6 @@
 
     <!-- Overlay do Pacto (O Lado Quente/Místico) -->
     <div class="bonus-overlay" id="secret-overlay">
-        <!-- Efeito de fagulhas subindo -->
         <div class="particles" id="particles"></div>
 
         <div class="scroll-container">
@@ -433,7 +430,6 @@
 
                 <div class="signature">
                     Eu amo vocês
-                    <!-- Assinatura Cursiva -->
                     <div class="handwritten-signature">Giullia Ferreira Rodrigues</div>
                 </div>
             </div>
@@ -441,23 +437,17 @@
     </div>
 
     <script>
-        // Função para alternar entre os mundos
         function toggleSecret() {
             const overlay = document.getElementById('secret-overlay');
             overlay.classList.toggle('active');
             
-            // Pausa o vídeo se estiver tocando ao abrir o pacto
-            const video = document.querySelector('video');
             if (overlay.classList.contains('active')) {
-                video.pause();
                 createParticles();
             }
         }
 
-        // Gera fagulhas místicas aleatórias
         function createParticles() {
             const container = document.getElementById('particles');
-            // Limpa partículas antigas se houver muitas
             if(container.childElementCount > 50) container.innerHTML = '';
 
             for (let i = 0; i < 20; i++) {
@@ -473,6 +463,3 @@
 
 </body>
 </html>
-     
-                     
-            
