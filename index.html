@@ -1,491 +1,226 @@
 
-       
+     import React, { useState, useEffect, useRef } from 'react';
+import { Sparkles, Calendar, Video, Ticket, Award, Clapperboard } from 'lucide-react';
 
-       
-       <!DOCTYPE html>
-<html lang="pt-br">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Epílogo | Despedida</title>
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,400&family=Montserrat:wght@200;300;400&family=Pinyon+Script&display=swap');
-        @import url('https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700&display=swap');
+export default function App() {
+  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+  const [popcorns, setPopcorns] = useState([]);
+  const [timeLeft, setTimeLeft] = useState({ days: 0, hours: 0, minutes: 0, seconds: 0 });
+  
+  // CONFIGURAÇÃO: Defina a data da estreia aqui (Formato: AAAA-MM-DDTHH:MM:SS)
+  // Atualmente definido para 1 mês à frente como exemplo
+  const targetDate = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString(); 
 
-        :root {
-            --bg-color: #080808;
-            --card-bg: #111111;
-            --text-main: #a0a0a0;
-            --text-highlight: #dcdcdc;
-            --accent: #2a2a35;
-            --border: #222;
-            
-            /* Variáveis da Página Secreta (Vinho/Místico) */
-            --wine-dark: #1a0505;
-            --wine-light: #4a0e16;
-            --gold-pale: #e6cbb3;
-        }
+  // Referência para o container principal para o efeito de holofote
+  const containerRef = useRef(null);
 
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+  // Efeito de Holofote (Spotlight)
+  useEffect(() => {
+    const handleMouseMove = (e) => {
+      if (containerRef.current) {
+        const rect = containerRef.current.getBoundingClientRect();
+        setMousePosition({
+          x: e.clientX - rect.left,
+          y: e.clientY - rect.top,
+        });
+      }
+    };
+    window.addEventListener('mousemove', handleMouseMove);
+    return () => window.removeEventListener('mousemove', handleMouseMove);
+  }, []);
 
-        body {
-            background-color: var(--bg-color);
-            color: var(--text-main);
-            font-family: 'Montserrat', sans-serif;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            padding: 20px;
-            overflow-x: hidden;
-            transition: background-color 1s ease;
-        }
+  // Contagem Regressiva
+  useEffect(() => {
+    const timer = setInterval(() => {
+      const difference = +new Date(targetDate) - +new Date();
+      
+      if (difference > 0) {
+        setTimeLeft({
+          days: Math.floor(difference / (1000 * 60 * 60 * 24)),
+          hours: Math.floor((difference / (1000 * 60 * 60)) % 24),
+          minutes: Math.floor((difference / 1000 / 60) % 60),
+          seconds: Math.floor((difference / 1000) % 60),
+        });
+      }
+    }, 1000);
 
-        /* --- ESTILOS PRINCIPAIS (LADO FRIO) --- */
+    return () => clearInterval(timer);
+  }, [targetDate]);
 
-        .container {
-            width: 100%;
-            max-width: 750px;
-            text-align: center;
-            opacity: 0;
-            animation: fadeIn 3.5s ease-out forwards;
-            position: relative;
-            z-index: 1;
-        }
+  // Função para criar pipocas
+  const handlePopcornBlast = () => {
+    const newPopcorns = Array.from({ length: 10 }).map((_, i) => ({
+      id: Date.now() + i,
+      left: Math.random() * 100, // posição horizontal aleatória
+      animationDuration: 1 + Math.random() * 2, // velocidade aleatória
+      rotation: Math.random() * 360,
+    }));
+    
+    setPopcorns(prev => [...prev, ...newPopcorns]);
 
-        h1 {
-            font-family: 'Cormorant Garamond', serif;
-            font-weight: 300;
-            font-size: 3rem;
-            letter-spacing: 0.15em;
-            color: var(--text-highlight);
-            margin-bottom: 5px;
-            text-transform: lowercase;
-            position: relative;
-            display: inline-block;
-        }
+    // Limpar pipocas antigas após a animação
+    setTimeout(() => {
+      setPopcorns(prev => prev.filter(p => !newPopcorns.find(np => np.id === p.id)));
+    }, 3000);
+  };
 
-        h1::after {
-            content: '';
-            display: block;
-            width: 60%;
-            height: 1px;
-            background: linear-gradient(90deg, transparent, var(--accent), transparent);
-            margin: 10px auto 0;
-        }
+  return (
+    <div 
+      ref={containerRef}
+      className="min-h-screen bg-neutral-950 text-neutral-100 flex flex-col relative overflow-hidden font-sans selection:bg-amber-500 selection:text-black"
+    >
+      {/* Background Noise/Texture */}
+      <div className="absolute inset-0 opacity-5 pointer-events-none bg-[url('https://www.transparenttextures.com/patterns/stardust.png')]"></div>
 
-        p.subtitle {
-            font-family: 'Cormorant Garamond', serif;
-            font-style: italic;
-            font-size: 1.2rem;
-            color: #555;
-            margin-bottom: 50px;
-            letter-spacing: 0.05em;
-        }
+      {/* Spotlight Effect Layer */}
+      <div 
+        className="pointer-events-none absolute inset-0 z-0 transition-opacity duration-300"
+        style={{
+          background: `radial-gradient(600px circle at ${mousePosition.x}px ${mousePosition.y}px, rgba(251, 191, 36, 0.08), transparent 40%)`
+        }}
+      />
 
-        /* Moldura do YouTube Responsiva */
-        .video-wrapper {
-            position: relative;
-            width: 100%;
-            padding-bottom: 56.25%; /* Proporção 16:9 */
-            height: 0;
-            background: var(--card-bg);
-            border: 1px solid var(--border);
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.9);
-            transition: border-color 0.8s ease, transform 0.8s ease;
-            margin-bottom: 10px; /* Reduzido para aproximar o link de fallback */
-            overflow: hidden;
-        }
+      {/* Decorative Golden Rays */}
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-96 bg-gradient-to-b from-amber-500/10 to-transparent blur-3xl -z-10"></div>
 
-        .video-wrapper:hover {
-            border-color: #333;
-            transform: translateY(-2px);
-        }
-
-        .video-wrapper iframe {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            border: 0;
-            /* Filtro mantido para preservar a estética */
-            filter: sepia(15%) contrast(95%) brightness(90%);
-        }
-
-        /* Link de Fallback (Caso o vídeo não carregue) */
-        .video-fallback {
-            margin-bottom: 40px;
-            font-size: 0.8rem;
-            opacity: 0.6;
-        }
-
-        .video-fallback a {
-            color: #666;
-            text-decoration: none;
-            transition: color 0.3s;
-            border-bottom: 1px solid transparent;
-        }
-
-        .video-fallback a:hover {
-            color: var(--text-highlight);
-            border-color: var(--text-highlight);
-        }
-
-        .dedication {
-            font-size: 0.95rem;
-            line-height: 2;
-            letter-spacing: 0.08em;
-            color: var(--text-main);
-            max-width: 580px;
-            margin: 0 auto;
-            text-align: justify;
-            text-align-last: center;
-        }
-
-        .dedication strong {
-            color: var(--text-highlight);
-            font-weight: 400;
-            font-family: 'Cormorant Garamond', serif;
-            font-size: 1.1rem;
-            border-bottom: 1px solid #333;
-        }
-
-        footer {
-            margin-top: 80px;
-            font-family: 'Cormorant Garamond', serif;
-            font-size: 0.9rem;
-            color: #333;
-            letter-spacing: 0.2em;
-            text-transform: uppercase;
-            border-top: 1px solid #111;
-            padding-top: 20px;
-            width: 50%;
-            margin-left: auto;
-            margin-right: auto;
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            align-items: center;
-        }
-
-        /* Botão Místico Secreto */
-        .secret-btn {
-            background: none;
-            border: none;
-            color: #333;
-            font-size: 1.2rem;
-            cursor: pointer;
-            transition: color 0.5s ease, text-shadow 0.5s ease;
-            padding: 10px;
-        }
-
-        .secret-btn:hover {
-            color: #5a1a25;
-            text-shadow: 0 0 5px #5a1a25;
-        }
-
-        /* --- ESTILOS DA PÁGINA BÔNUS (LADO QUENTE/MÍSTICO) --- */
-
-        .bonus-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: radial-gradient(circle at 50% 30%, var(--wine-light) 0%, var(--wine-dark) 90%);
-            z-index: 1000;
-            opacity: 0;
-            visibility: hidden;
-            transition: opacity 1.5s ease-in-out, visibility 1.5s;
-            overflow-y: auto; 
-            display: block; 
-        }
-
-        .bonus-overlay.active {
-            opacity: 1;
-            visibility: visible;
-        }
-
-        .scroll-container {
-            min-height: 100%;
-            width: 100%;
-            padding: 60px 20px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .poem-container {
-            width: 100%;
-            max-width: 600px;
-            text-align: center;
-            color: var(--gold-pale);
-            position: relative;
-            padding: 60px 40px; 
-            
-            border: 3px solid var(--gold-pale);
-            outline: 1px solid var(--gold-pale);
-            outline-offset: -12px;
-            
-            box-shadow: 
-                0 0 50px rgba(0,0,0,0.9), 
-                inset 0 0 80px rgba(26, 5, 5, 0.9); 
-            
-            background: rgba(26, 5, 5, 0.95);
-            backdrop-filter: blur(5px);
-            height: auto; 
-            box-sizing: border-box;
-        }
-
-        .moon-icon {
-            font-size: 3rem;
-            margin-bottom: 20px;
-            display: block;
-            text-shadow: 0 0 20px rgba(230, 203, 179, 0.4);
-            animation: pulseMoon 4s infinite ease-in-out;
-        }
-
-        .poem-title {
-            font-family: 'Cinzel Decorative', cursive;
-            font-size: 2rem;
-            margin-bottom: 30px;
-            color: var(--gold-pale);
-            text-shadow: 0 0 10px rgba(74, 14, 22, 0.8);
-            border-bottom: 1px solid rgba(230, 203, 179, 0.3);
-            display: inline-block;
-            padding-bottom: 10px;
-        }
-
-        .poem-body {
-            font-family: 'Cormorant Garamond', serif;
-            font-size: 1.3rem;
-            line-height: 1.6;
-            font-style: italic;
-        }
-
-        .stanza {
-            margin-bottom: 25px;
-        }
-
-        .signature {
-            margin-top: 40px;
-            font-family: 'Montserrat', sans-serif;
-            font-size: 0.9rem;
-            text-transform: uppercase;
-            letter-spacing: 3px;
-            opacity: 0.8;
-            width: 100%;
-            text-align: center;
-        }
-
-        /* Estilo específico para a assinatura cursiva */
-        .handwritten-signature {
-            font-family: 'Pinyon Script', cursive;
-            font-size: 1.8rem; 
-            color: var(--gold-pale);
-            margin-top: 15px;
-            text-transform: none;
-            letter-spacing: normal;
-            opacity: 1;
-            text-shadow: 0 0 8px rgba(230, 203, 179, 0.4);
-            text-align: right;
-            display: block; 
-        }
-
-        .close-btn {
-            position: absolute;
-            top: 15px;
-            right: 15px;
-            background: none;
-            border: none;
-            color: var(--gold-pale);
-            font-family: 'Cormorant Garamond', serif;
-            font-size: 2rem;
-            line-height: 1;
-            cursor: pointer;
-            opacity: 0.6;
-            transition: opacity 0.3s, transform 0.3s;
-            z-index: 10;
-        }
-
-        .close-btn:hover { opacity: 1; transform: scale(1.1); }
-
-        .particles {
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 100%;
-            pointer-events: none;
-            overflow: hidden;
-        }
-        .particle {
-            position: absolute;
-            bottom: -10px;
-            width: 3px;
-            height: 3px;
-            background: #ff6b6b;
-            border-radius: 50%;
-            box-shadow: 0 0 5px #ff6b6b;
-            animation: floatUp 8s linear infinite;
-            opacity: 0;
-        }
-
-        @keyframes fadeIn {
-            0% { opacity: 0; filter: blur(5px); transform: translateY(30px); }
-            100% { opacity: 1; filter: blur(0); transform: translateY(0); }
-        }
-
-        @keyframes pulseMoon {
-            0%, 100% { text-shadow: 0 0 20px rgba(230, 203, 179, 0.2); opacity: 0.8; }
-            50% { text-shadow: 0 0 35px rgba(230, 203, 179, 0.6); opacity: 1; }
-        }
-
-        @keyframes floatUp {
-            0% { transform: translateY(0) translateX(0); opacity: 0; }
-            20% { opacity: 0.8; }
-            80% { opacity: 0.5; }
-            100% { transform: translateY(-100vh) translateX(20px); opacity: 0; }
-        }
-
-        @media (max-width: 600px) {
-            h1 { font-size: 2.2rem; }
-            .container { width: 95%; }
-            .dedication { text-align: left; padding: 0 15px; }
-            .poem-container { 
-                padding: 30px 20px; 
-                outline-offset: -6px;
-                border-width: 1px;
-            }
-            .poem-body { font-size: 1.1rem; }
-        }
-    </style>
-</head>
-<body>
-
-    <!-- Container Principal (O Lado Frio/Distante) -->
-    <div class="container" id="main-content">
+      <main className="flex-grow flex flex-col items-center justify-center p-6 z-10 w-full max-w-4xl mx-auto text-center space-y-12">
         
-        <header>
-            <h1>Epílogo</h1>
-            <p class="subtitle">o que resta, permanece</p>
-        </header>
-
-        <div class="video-wrapper">
-            <!-- 
-                PLAYER DO GOOGLE DRIVE 
-                Link original: https://drive.google.com/file/d/1ulvBjNpiICSGxCmVXK8tNdLZgdfcoiGM/view?usp=sharing
-                Link modificado para /preview para funcionar o player
-            -->
-            <iframe 
-                src="https://drive.google.com/file/d/1ulvBjNpiICSGxCmVXK8tNdLZgdfcoiGM/preview" 
-                width="640" 
-                height="480" 
-                allow="autoplay"
-                style="border: none;">
-            </iframe>
+        {/* Header Section */}
+        <div className="space-y-6 animate-fade-in-up">
+          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-amber-500/30 bg-amber-500/10 text-amber-400 text-sm font-medium tracking-widest uppercase mb-4 backdrop-blur-sm">
+            <Sparkles className="w-4 h-4 animate-pulse" />
+            Em Manutenção
+            <Sparkles className="w-4 h-4 animate-pulse" />
+          </div>
+          
+          <h1 className="text-5xl md:text-7xl font-extrabold tracking-tight">
+            <span className="block text-white mb-2 font-serif">O GRANDE</span>
+            <span className="bg-clip-text text-transparent bg-gradient-to-r from-amber-200 via-amber-400 to-amber-600 drop-shadow-[0_0_15px_rgba(245,158,11,0.5)] font-serif">
+              EVENTO DO ANO
+            </span>
+          </h1>
         </div>
 
-        <!-- Link de Fallback: Aparece caso o embed falhe -->
-        <div class="video-fallback">
-            <a href="https://drive.google.com/file/d/1ulvBjNpiICSGxCmVXK8tNdLZgdfcoiGM/view?usp=sharing" target="_blank" rel="noopener noreferrer">
-                O player não abriu? Clique aqui para assistir no Google Drive ↗
-            </a>
-        </div>
-
-        <div class="dedication">
-            <p>
-                Não sou de muitas palavras, nem de grandes gestos. O tempo passa e a maioria das coisas se dissolve no silêncio inevitável. 
-                Mas, para aqueles que caminharam ao meu lado na escuridão e na luz, deixo este breve registro.
-                <br><br>
-                Aos poucos e raros amigos: <strong>vocês são a minha memória viva.</strong>
-            </p>
-        </div>
-
-        <footer>
-            <span>2021 — 2025</span>
-            <button class="secret-btn" onclick="toggleSecret()" title="Um segredo...">☾</button>
-        </footer>
-
-    </div>
-
-    <!-- Overlay do Pacto (O Lado Quente/Místico) -->
-    <div class="bonus-overlay" id="secret-overlay">
-        <div class="particles" id="particles"></div>
-
-        <div class="scroll-container">
-            <div class="poem-container">
-                <button class="close-btn" onclick="toggleSecret()">×</button>
-                
-                <span class="moon-icon">🌕</span>
-                
-                <h2 class="poem-title">O Pacto das Almas Irmãs</h2>
-                
-                <div class="poem-body">
-                    <div class="stanza">
-                        Não foi o acaso que cruzou nossas vidas,<br>
-                        Mas a força antiga de almas unidas.<br>
-                        Onde antes havia o caminhar sozinhas,<br>
-                        Agora entrelaçam-se as tuas mãos e as minhas.
-                    </div>
-
-                    <div class="stanza">
-                        Que a minha coragem alimente a tua fé,<br>
-                        E a tua firmeza me mantenha de pé.<br>
-                        Eu sou o teu porto se o mar agitar,<br>
-                        Tu és o meu solo se eu precisar pousar.
-                    </div>
-
-                    <div class="stanza">
-                        Não há tempestade, nem medo, nem dor,<br>
-                        Que quebre este elo forjado em amor.<br>
-                        Somos o refúgio, o colo, a raiz,<br>
-                        O espelho onde a outra se enxerga feliz.
-                    </div>
-
-                    <div class="stanza">
-                        Mulheres, guerreiras, irmãs de jornada,<br>
-                        Nossa união é a nossa espada.<br>
-                        Que sejamos sempre, no riso ou na prece,<br>
-                        A força que cura e que nunca esquece.
-                    </div>
-                    
-                    <div class="stanza" style="margin-top: 30px; color: #fff;">
-                        Que assim seja, e assim se faça.
-                    </div>
-                </div>
-
-                <div class="signature">
-                    Eu amo vocês
-                    <div class="handwritten-signature">Giullia Ferreira Rodrigues</div>
-                </div>
+        {/* Date & Main Message */}
+        <div className="relative p-1">
+          {/* Gold Border Gradient */}
+          <div className="absolute inset-0 bg-gradient-to-r from-transparent via-amber-500 to-transparent opacity-50 blur-sm"></div>
+          
+          <div className="relative bg-neutral-900/80 border-y border-amber-500/30 backdrop-blur-md p-8 md:p-12 rounded-xl shadow-2xl space-y-8">
+            <div className="space-y-4">
+              <h2 className="text-2xl md:text-3xl font-light text-amber-100 uppercase tracking-widest">
+                Aguardar Data
+              </h2>
+              <div className="flex flex-wrap justify-center items-center gap-4 text-4xl md:text-6xl font-bold text-amber-400 font-serif">
+                 <Calendar className="w-8 h-8 md:w-12 md:h-12 text-amber-600" />
+                 <span>XX/XX/XXXX</span>
+              </div>
+              <p className="text-sm text-neutral-400 uppercase tracking-[0.2em] mt-2">
+                Grande Estreia Mundial
+              </p>
             </div>
+
+            <div className="h-px w-full bg-gradient-to-r from-transparent via-amber-700 to-transparent"></div>
+
+            <div className="space-y-6">
+              <div className="flex items-center justify-center gap-3 text-red-500 animate-pulse">
+                <Video className="w-6 h-6" />
+                <span className="font-bold tracking-wider">AO VIVO</span>
+              </div>
+              
+              <p className="text-xl md:text-2xl font-serif text-white leading-relaxed max-w-2xl mx-auto">
+                "REACT AO VIVO COM TODAS AS CONVIDADAS PRESENTES NO <span className="text-blue-400 font-bold">GOOGLE MEET</span>"
+              </p>
+
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm text-amber-200/80 mt-8">
+                <div className="flex flex-col items-center gap-2 p-4 bg-white/5 rounded-lg border border-white/10 hover:border-amber-500/50 transition-colors">
+                  <span className="text-2xl">🍿</span>
+                  <span>PREPARE A PIPOCA</span>
+                </div>
+                <div className="flex flex-col items-center gap-2 p-4 bg-white/5 rounded-lg border border-white/10 hover:border-amber-500/50 transition-colors">
+                  <span className="text-2xl">👨‍👩‍👧‍👦</span>
+                  <span>CHAME A FAMÍLIA</span>
+                </div>
+                <div className="flex flex-col items-center gap-2 p-4 bg-white/5 rounded-lg border border-white/10 hover:border-amber-500/50 transition-colors">
+                  <span className="text-2xl">🤧</span>
+                  <span>TRAGA OS LENÇOS</span>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
+
+        {/* Countdown Timer (Visual) */}
+        <div className="grid grid-cols-4 gap-4 md:gap-8 w-full max-w-2xl text-amber-500">
+            {Object.entries(timeLeft).map(([unit, value]) => (
+              <div key={unit} className="flex flex-col items-center">
+                <div className="text-2xl md:text-4xl font-bold font-mono bg-neutral-900 border border-amber-900/50 rounded-lg w-full py-3 shadow-[0_0_10px_rgba(251,191,36,0.1)]">
+                  {value.toString().padStart(2, '0')}
+                </div>
+                <div className="text-xs uppercase tracking-widest mt-2 text-neutral-500">{unit}</div>
+              </div>
+            ))}
+        </div>
+
+        {/* Interactive Button */}
+        <button 
+          onClick={handlePopcornBlast}
+          className="group relative px-8 py-4 bg-gradient-to-r from-red-700 to-red-600 text-white font-bold tracking-wider uppercase rounded-full shadow-[0_0_20px_rgba(220,38,38,0.4)] hover:shadow-[0_0_40px_rgba(220,38,38,0.6)] hover:scale-105 transition-all duration-300 active:scale-95 overflow-hidden"
+        >
+          <span className="relative z-10 flex items-center gap-2">
+            <Clapperboard className="w-5 h-5 group-hover:rotate-12 transition-transform" />
+            Quero Pipoca Agora!
+          </span>
+          <div className="absolute inset-0 bg-gradient-to-r from-yellow-400/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+        </button>
+
+      </main>
+
+      {/* Footer / Red Carpet */}
+      <footer className="w-full bg-gradient-to-t from-red-900 to-transparent pt-12 pb-6 px-6 mt-auto">
+        <div className="max-w-4xl mx-auto flex flex-col md:flex-row justify-between items-center text-red-200/60 text-sm">
+          <div className="flex items-center gap-2 mb-4 md:mb-0">
+            <Award className="w-4 h-4" />
+            <span>Official Selection {new Date().getFullYear()}</span>
+          </div>
+          <p>© Todos os direitos reservados aos organizadores do evento.</p>
+        </div>
+      </footer>
+
+      {/* Popcorn Animation Container */}
+      {popcorns.map((popcorn) => (
+        <div
+          key={popcorn.id}
+          className="fixed text-4xl pointer-events-none z-50 animate-fall"
+          style={{
+            left: `${popcorn.left}%`,
+            top: '-50px',
+            transform: `rotate(${popcorn.rotation}deg)`,
+            animationDuration: `${popcorn.animationDuration}s`
+          }}
+        >
+          🍿
+        </div>
+      ))}
+
+      <style jsx global>{`
+        @keyframes fall {
+          0% { top: -50px; transform: rotate(0deg); opacity: 1; }
+          100% { top: 100vh; transform: rotate(360deg); opacity: 0; }
+        }
+        .animate-fall {
+          animation-name: fall;
+          animation-timing-function: linear;
+          animation-fill-mode: forwards;
+        }
+        @keyframes fade-in-up {
+          0% { opacity: 0; transform: translateY(20px); }
+          100% { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fade-in-up {
+          animation: fade-in-up 1s ease-out forwards;
+        }
+      `}</style>
     </div>
-
-    <script>
-        function toggleSecret() {
-            const overlay = document.getElementById('secret-overlay');
-            overlay.classList.toggle('active');
-            
-            if (overlay.classList.contains('active')) {
-                createParticles();
-            }
-        }
-
-        function createParticles() {
-            const container = document.getElementById('particles');
-            if(container.childElementCount > 50) container.innerHTML = '';
-
-            for (let i = 0; i < 20; i++) {
-                const p = document.createElement('div');
-                p.classList.add('particle');
-                p.style.left = Math.random() * 100 + '%';
-                p.style.animationDuration = (Math.random() * 5 + 5) + 's';
-                p.style.animationDelay = (Math.random() * 5) + 's';
-                container.appendChild(p);
-            }
-        }
-    </script>
-
-</body>
-</html>
+  );
+}
