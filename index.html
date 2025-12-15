@@ -1,274 +1,278 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { Sparkles, Calendar, Video, Award, Clapperboard, Users, Heart } from 'lucide-react';
-
-export default function App() {
-  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
-  // Alterado de 'popcorns' para 'particles' para suportar pipocas e brilhos
-  const [particles, setParticles] = useState([]);
-  const [timeLeft, setTimeLeft] = useState({ days: 0, hours: 0, minutes: 0, seconds: 0 });
-  
-  // Data alvo (fictícia para demonstração da contagem)
-  const targetDate = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString(); 
-
-  const containerRef = useRef(null);
-
-  // Efeito de Holofote (Segue o mouse)
-  useEffect(() => {
-    const handleMouseMove = (e) => {
-      if (containerRef.current) {
-        const rect = containerRef.current.getBoundingClientRect();
-        setMousePosition({
-          x: e.clientX - rect.left,
-          y: e.clientY - rect.top,
-        });
-      }
-    };
-    window.addEventListener('mousemove', handleMouseMove);
-    return () => window.removeEventListener('mousemove', handleMouseMove);
-  }, []);
-
-  // Contagem Regressiva
-  useEffect(() => {
-    const timer = setInterval(() => {
-      const difference = +new Date(targetDate) - +new Date();
-      
-      if (difference > 0) {
-        setTimeLeft({
-          days: Math.floor(difference / (1000 * 60 * 60 * 24)),
-          hours: Math.floor((difference / (1000 * 60 * 60)) % 24),
-          minutes: Math.floor((difference / 1000 / 60) % 60),
-          seconds: Math.floor((difference / 1000) % 60),
-        });
-      }
-    }, 1000);
-
-    return () => clearInterval(timer);
-  }, [targetDate]);
-
-  // Função unificada para Celebrar (Pipocas + Brilhos)
-  const handleCelebration = () => {
-    // Cria 25 partículas de uma vez (mistura de pipoca e brilhos)
-    const newParticles = Array.from({ length: 25 }).map((_, i) => {
-      const isPopcorn = Math.random() > 0.4; // 60% pipoca, 40% brilho
-      const content = isPopcorn 
-        ? '🍿' 
-        : ['✨', '⭐', '💫', '🔶'][Math.floor(Math.random() * 4)];
-      
-      return {
-        // Correção: ID único usando timestamp + índice + random para evitar chaves duplicadas
-        id: `${Date.now()}-${i}-${Math.random().toString(36).substr(2, 9)}`,
-        left: Math.random() * 90 + 5, // posição horizontal
-        animationDuration: 1.5 + Math.random() * 2.5, // velocidade variável
-        rotation: Math.random() * 360,
-        size: isPopcorn ? (2 + Math.random() * 1.5) : (1.5 + Math.random() * 2),
-        content,
-        isGlowing: !isPopcorn // Brilhos ganham efeito neon
-      };
-    });
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Grande Estreia - Em Manutenção</title>
     
-    setParticles(prev => [...prev, ...newParticles]);
-
-    // Limpeza automática
-    setTimeout(() => {
-      setParticles(prev => {
-        const newIds = new Set(newParticles.map(p => p.id));
-        return prev.filter(p => !newIds.has(p.id));
-      });
-    }, 4500);
-  };
-
-  return (
-    <div 
-      ref={containerRef}
-      className="min-h-screen bg-[#050505] text-neutral-100 flex flex-col relative overflow-hidden font-sans selection:bg-yellow-600 selection:text-black"
-    >
-      {/* Importação de Fontes via Style Tag */}
-      <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=Montserrat:wght@300;400;600&display=swap');
-        
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Fontes -->
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
+    
+    <style>
+        /* --- Configurações de Fonte --- */
         .font-cinzel { font-family: 'Cinzel', serif; }
         .font-montserrat { font-family: 'Montserrat', sans-serif; }
-        
+
+        /* --- Fundo e Seleção --- */
+        body {
+            background-color: #050505;
+            color: #f5f5f5;
+            overflow-x: hidden;
+        }
+        ::selection {
+            background-color: #ca8a04; /* yellow-600 */
+            color: black;
+        }
+
+        /* --- Animações --- */
         @keyframes fall {
-          0% { top: -50px; transform: rotate(0deg) scale(0.5); opacity: 1; }
-          50% { opacity: 1; }
-          100% { top: 110vh; transform: rotate(720deg) scale(1); opacity: 0; }
-        }
-        .animate-fall {
-          animation-name: fall;
-          animation-timing-function: linear;
-          animation-fill-mode: forwards;
-        }
-        @keyframes fade-in-up {
-          0% { opacity: 0; transform: translateY(20px); }
-          100% { opacity: 1; transform: translateY(0); }
-        }
-        .animate-fade-in-up {
-          animation: fade-in-up 1s ease-out forwards;
+            0% { top: -50px; transform: rotate(0deg) scale(0.5); opacity: 1; }
+            50% { opacity: 1; }
+            100% { top: 110vh; transform: rotate(720deg) scale(1); opacity: 0; }
         }
         
-        /* Shimmer effect for the ticket */
+        @keyframes fade-in-up {
+            0% { opacity: 0; transform: translateY(20px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+        
         @keyframes shimmer {
-          100% { transform: translateX(100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        .animate-fade-in-up {
+            animation: fade-in-up 1s ease-out forwards;
+        }
+
+        /* Efeito de brilho no bilhete */
+        .shimmer-effect {
+            position: relative;
+            overflow: hidden;
         }
         .shimmer-effect::after {
-          content: '';
-          position: absolute;
-          top: 0;
-          left: 0;
-          width: 100%;
-          height: 100%;
-          background: linear-gradient(90deg, transparent, rgba(255,215,0,0.2), transparent);
-          transform: translateX(-100%);
-          animation: shimmer 2s infinite;
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,215,0,0.2), transparent);
+            transform: translateX(-100%);
+            animation: shimmer 2s infinite;
         }
-      `}</style>
 
-      {/* Camada de Ruído (Noise Texture) */}
-      <div className="absolute inset-0 opacity-10 pointer-events-none" style={{ backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.05'/%3E%3C/svg%3E")` }}></div>
+        /* Classe para partículas */
+        .particle {
+            position: fixed;
+            pointer-events: none;
+            z-index: 50;
+            animation-name: fall;
+            animation-timing-function: linear;
+            animation-fill-mode: forwards;
+            top: -50px; /* Começa fora da tela */
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col relative font-sans">
 
-      {/* Holofote Interativo */}
-      <div 
-        className="pointer-events-none absolute inset-0 z-0 transition-opacity duration-300"
-        style={{
-          background: `radial-gradient(800px circle at ${mousePosition.x}px ${mousePosition.y}px, rgba(255, 215, 0, 0.06), transparent 40%)`
-        }}
-      />
+    <!-- Camada de Ruído (Noise Texture) -->
+    <div class="absolute inset-0 opacity-10 pointer-events-none z-10" 
+         style="background-image: url('data:image/svg+xml,%3Csvg viewBox=\'0 0 200 200\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cfilter id=\'noiseFilter\'%3E%3CfeTurbulence type=\'fractalNoise\' baseFrequency=\'0.65\' numOctaves=\'3\' stitchTiles=\'stitch\'/%3E%3C/filter%3E%3Crect width=\'100%25\' height=\'100%25\' filter=\'url(%23noiseFilter)\' opacity=\'0.05\'/%3E%3C/svg%3E')">
+    </div>
 
-      {/* Raios Dourados Superiores */}
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-[50vh] bg-gradient-to-b from-yellow-600/10 to-transparent blur-3xl -z-10"></div>
+    <!-- Holofote Interativo -->
+    <div id="spotlight" 
+         class="pointer-events-none absolute inset-0 z-0 transition-opacity duration-300"
+         style="background: radial-gradient(800px circle at 50% 50%, rgba(255, 215, 0, 0.06), transparent 40%);">
+    </div>
 
-      <main className="flex-grow flex flex-col items-center justify-center p-4 z-10 w-full max-w-5xl mx-auto text-center space-y-10">
+    <!-- Raios Dourados Superiores -->
+    <div class="absolute top-0 left-1/2 -translate-x-1/2 w-full h-[50vh] bg-gradient-to-b from-yellow-600/10 to-transparent blur-3xl -z-10"></div>
+
+    <!-- Conteúdo Principal -->
+    <main class="flex-grow flex flex-col items-center justify-center p-4 z-20 w-full max-w-5xl mx-auto text-center space-y-10">
         
-        {/* Cabeçalho de Manutenção */}
-        <div className="space-y-6 animate-fade-in-up w-full">
-          <div className="inline-flex items-center gap-3 px-6 py-2 rounded-full border border-yellow-500/30 bg-black/40 text-yellow-500 text-xs md:text-sm font-bold tracking-[0.2em] uppercase mb-4 backdrop-blur-sm shadow-[0_0_15px_rgba(234,179,8,0.2)]">
-            <Sparkles className="w-4 h-4 animate-pulse text-yellow-300" />
-            Em Manutenção
-            <Sparkles className="w-4 h-4 animate-pulse text-yellow-300" />
-          </div>
-          
-          <h1 className="font-cinzel text-5xl md:text-7xl lg:text-8xl font-black tracking-tight leading-none">
-            <span className="block text-white/90 mb-2 drop-shadow-xl">GRANDE</span>
-            <span className="bg-clip-text text-transparent bg-gradient-to-b from-[#cfc09f] via-[#ffecb3] to-[#3a2c0f] drop-shadow-[0_4px_10px_rgba(255,215,0,0.3)]">
-              ESTRÉIA
-            </span>
-          </h1>
-        </div>
-
-        {/* Card Principal */}
-        <div className="relative p-1 w-full max-w-4xl">
-          {/* Borda Dourada Brilhante */}
-          <div className="absolute inset-0 bg-gradient-to-r from-transparent via-yellow-600/50 to-transparent opacity-60 blur-sm"></div>
-          
-          <div className="relative bg-[#0a0a0a]/90 border-y border-yellow-500/30 backdrop-blur-xl p-8 md:p-12 rounded-xl shadow-2xl space-y-10 overflow-hidden">
+        <!-- Cabeçalho de Manutenção -->
+        <div class="space-y-6 animate-fade-in-up w-full">
+            <div class="inline-flex items-center gap-3 px-6 py-2 rounded-full border border-yellow-500/30 bg-black/40 text-yellow-500 text-xs md:text-sm font-bold tracking-[0.2em] uppercase mb-4 backdrop-blur-sm shadow-[0_0_15px_rgba(234,179,8,0.2)]">
+                <!-- Sparkle Icon Left -->
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 animate-pulse text-yellow-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/></svg>
+                Em Manutenção
+                <!-- Sparkle Icon Right -->
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 animate-pulse text-yellow-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/></svg>
+            </div>
             
-            {/* Seção da Data (Ticket) */}
-            <div className="space-y-6">
-              <h2 className="font-montserrat text-sm md:text-base text-gray-400 uppercase tracking-[0.4em]">
-                Aguardar Data
-              </h2>
-              
-              <div 
-                className="relative inline-block group cursor-pointer"
-                onClick={handleCelebration}
-              >
-                <div className="absolute inset-0 bg-yellow-500 blur-xl opacity-20 group-hover:opacity-40 transition-duration-500"></div>
-                <div className="relative bg-black border border-yellow-500/60 px-8 py-4 md:px-12 md:py-6 overflow-hidden shimmer-effect shadow-lg transform transition hover:scale-105 active:scale-95 duration-300">
-                  <div className="flex items-center justify-center gap-4 text-3xl md:text-5xl font-cinzel font-bold text-white">
-                     <Calendar className="w-8 h-8 md:w-10 md:h-10 text-yellow-500" />
-                     <span>XX / XX / XXXX</span>
-                  </div>
-                  <p className="text-[10px] text-yellow-500 uppercase tracking-[0.4em] mt-3 font-montserrat">Save the Date</p>
-                </div>
-              </div>
-            </div>
-
-            <div className="h-px w-2/3 mx-auto bg-gradient-to-r from-transparent via-yellow-800 to-transparent"></div>
-
-            {/* Descrição do Evento */}
-            <div className="space-y-8">
-              <div className="flex flex-col md:flex-row items-center justify-center gap-3 text-red-500 animate-pulse">
-                <div className="flex items-center gap-2">
-                    <Video className="w-6 h-6" />
-                    <span className="font-cinzel font-bold tracking-wider text-xl">REACT AO VIVO</span>
-                </div>
-              </div>
-              
-              <p className="font-montserrat text-lg md:text-2xl text-gray-200 leading-relaxed max-w-3xl mx-auto">
-                COM <span className="text-yellow-400 font-bold">TODAS AS CONVIDADAS</span> PRESENTES NO <br className="hidden md:block"/>
-                <span className="inline-flex items-center gap-2 mt-2 px-3 py-1 rounded bg-blue-900/30 text-blue-200 border border-blue-500/30 font-bold text-base">
-                    GOOGLE MEET
+            <h1 class="font-cinzel text-5xl md:text-7xl lg:text-8xl font-black tracking-tight leading-none">
+                <span class="block text-white/90 mb-2 drop-shadow-xl">GRANDE</span>
+                <span class="bg-clip-text text-transparent bg-gradient-to-b from-[#cfc09f] via-[#ffecb3] to-[#3a2c0f] drop-shadow-[0_4px_10px_rgba(255,215,0,0.3)]">
+                    ESTRÉIA
                 </span>
-              </p>
-
-              {/* Grid de Ícones e Texto */}
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-sm text-yellow-100/90 mt-8 pt-8 border-t border-white/5">
-                <div className="flex flex-col items-center gap-3 p-4 hover:bg-white/5 rounded-lg transition-colors group">
-                  <span className="text-4xl drop-shadow-md group-hover:scale-110 transition-transform duration-300">🍿</span>
-                  <span className="font-cinzel font-bold tracking-widest text-center">PREPARE SUA<br/>PIPOCA</span>
-                </div>
-                <div className="flex flex-col items-center gap-3 p-4 hover:bg-white/5 rounded-lg transition-colors group">
-                  <div className="bg-gray-800 p-2 rounded-full group-hover:bg-yellow-900/40 transition-colors">
-                      <Users className="w-8 h-8 text-yellow-500" />
-                  </div>
-                  <span className="font-cinzel font-bold tracking-widest text-center">CHAME SEUS FAMILIARES<br/>E AMIGOS</span>
-                </div>
-                <div className="flex flex-col items-center gap-3 p-4 hover:bg-white/5 rounded-lg transition-colors group">
-                  <div className="bg-gray-800 p-2 rounded-full group-hover:bg-yellow-900/40 transition-colors">
-                      <Heart className="w-8 h-8 text-yellow-500" />
-                  </div>
-                  <span className="font-cinzel font-bold tracking-widest text-center">NÃO SE ESQUEÇA<br/>DOS LENÇOS</span>
-                </div>
-              </div>
-            </div>
-          </div>
+            </h1>
         </div>
 
-        {/* Botão Interativo Principal */}
+        <!-- Card Principal -->
+        <div class="relative p-1 w-full max-w-4xl">
+            <!-- Borda Dourada Brilhante -->
+            <div class="absolute inset-0 bg-gradient-to-r from-transparent via-yellow-600/50 to-transparent opacity-60 blur-sm"></div>
+            
+            <div class="relative bg-[#0a0a0a]/90 border-y border-yellow-500/30 backdrop-blur-xl p-8 md:p-12 rounded-xl shadow-2xl space-y-10 overflow-hidden">
+                
+                <!-- Seção da Data (Ticket) -->
+                <div class="space-y-6">
+                    <h2 class="font-montserrat text-sm md:text-base text-gray-400 uppercase tracking-[0.4em]">
+                        Aguardar Data
+                    </h2>
+                    
+                    <div class="relative inline-block group cursor-pointer" onclick="handleCelebration()">
+                        <div class="absolute inset-0 bg-yellow-500 blur-xl opacity-20 group-hover:opacity-40 transition duration-500"></div>
+                        <div class="relative bg-black border border-yellow-500/60 px-8 py-4 md:px-12 md:py-6 overflow-hidden shimmer-effect shadow-lg transform transition hover:scale-105 active:scale-95 duration-300">
+                            <div class="flex items-center justify-center gap-4 text-3xl md:text-5xl font-cinzel font-bold text-white">
+                                <!-- Calendar Icon -->
+                                <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 md:w-10 md:h-10 text-yellow-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 2v4"/><path d="M16 2v4"/><rect width="18" height="18" x="3" y="4" rx="2"/><path d="M3 10h18"/></svg>
+                                <span>XX / XX / XXXX</span>
+                            </div>
+                            <p class="text-[10px] text-yellow-500 uppercase tracking-[0.4em] mt-3 font-montserrat">Save the Date</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="h-px w-2/3 mx-auto bg-gradient-to-r from-transparent via-yellow-800 to-transparent"></div>
+
+                <!-- Descrição do Evento -->
+                <div class="space-y-8">
+                    <div class="flex flex-col md:flex-row items-center justify-center gap-3 text-red-500 animate-pulse">
+                        <div class="flex items-center gap-2">
+                            <!-- Video Icon -->
+                            <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m22 8-6 4 6 4V8Z"/><rect width="14" height="12" x="2" y="6" rx="2" ry="2"/></svg>
+                            <span class="font-cinzel font-bold tracking-wider text-xl">REACT AO VIVO</span>
+                        </div>
+                    </div>
+                    
+                    <p class="font-montserrat text-lg md:text-2xl text-gray-200 leading-relaxed max-w-3xl mx-auto">
+                        COM <span class="text-yellow-400 font-bold">TODAS AS CONVIDADAS</span> PRESENTES NO <br class="hidden md:block"/>
+                        <span class="inline-flex items-center gap-2 mt-2 px-3 py-1 rounded bg-blue-900/30 text-blue-200 border border-blue-500/30 font-bold text-base">
+                            GOOGLE MEET
+                        </span>
+                    </p>
+
+                    <!-- Grid de Ícones e Texto -->
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 text-sm text-yellow-100/90 mt-8 pt-8 border-t border-white/5">
+                        <div class="flex flex-col items-center gap-3 p-4 hover:bg-white/5 rounded-lg transition-colors group">
+                            <span class="text-4xl drop-shadow-md group-hover:scale-110 transition-transform duration-300">🍿</span>
+                            <span class="font-cinzel font-bold tracking-widest text-center">PREPARE SUA<br/>PIPOCA</span>
+                        </div>
+                        <div class="flex flex-col items-center gap-3 p-4 hover:bg-white/5 rounded-lg transition-colors group">
+                            <div class="bg-gray-800 p-2 rounded-full group-hover:bg-yellow-900/40 transition-colors">
+                                <!-- Users Icon -->
+                                <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 text-yellow-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                            </div>
+                            <span class="font-cinzel font-bold tracking-widest text-center">CHAME SEUS FAMILIARES<br/>E AMIGOS</span>
+                        </div>
+                        <div class="flex flex-col items-center gap-3 p-4 hover:bg-white/5 rounded-lg transition-colors group">
+                            <div class="bg-gray-800 p-2 rounded-full group-hover:bg-yellow-900/40 transition-colors">
+                                <!-- Heart Icon -->
+                                <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 text-yellow-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>
+                            </div>
+                            <span class="font-cinzel font-bold tracking-widest text-center">NÃO SE ESQUEÇA<br/>DOS LENÇOS</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Botão Interativo Principal -->
         <button 
-          onClick={handleCelebration}
-          className="group relative px-10 py-5 bg-gradient-to-r from-red-800 to-red-600 text-white font-cinzel font-bold tracking-wider uppercase rounded-full shadow-[0_0_30px_rgba(185,28,28,0.4)] hover:shadow-[0_0_50px_rgba(220,38,38,0.6)] hover:scale-105 transition-all duration-300 active:scale-95 overflow-hidden border border-red-400/50"
+            onclick="handleCelebration()"
+            class="group relative px-10 py-5 bg-gradient-to-r from-red-800 to-red-600 text-white font-cinzel font-bold tracking-wider uppercase rounded-full shadow-[0_0_30px_rgba(185,28,28,0.4)] hover:shadow-[0_0_50px_rgba(220,38,38,0.6)] hover:scale-105 transition-all duration-300 active:scale-95 overflow-hidden border border-red-400/50"
         >
-          <span className="relative z-10 flex items-center gap-3 text-lg">
-            <Clapperboard className="w-6 h-6 group-hover:-rotate-12 transition-transform" />
-            Celebrar Estreia
-          </span>
-          <div className="absolute inset-0 bg-gradient-to-r from-yellow-400/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+            <span class="relative z-10 flex items-center gap-3 text-lg">
+                <!-- Clapperboard Icon -->
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 group-hover:-rotate-12 transition-transform" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.2 6 3 11l-.9-2.4c-.5-1.1.2-2.3 1.3-2.8l3.2-1.4c1.1-.5 2.3.2 2.8 1.3l.9 2.4"/><path d="m8.8 16.4 6.2-12.6"/><path d="M13 21 3 11l14.2-5.3c1.1-.5 2.3.2 2.8 1.3l2.8 7.4c.5 1.1-.2 2.3-1.3 2.8l-8.5 3.8Z"/></svg>
+                Celebrar Estreia
+            </span>
+            <div class="absolute inset-0 bg-gradient-to-r from-yellow-400/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
         </button>
 
-      </main>
+    </main>
 
-      {/* Footer / Red Carpet */}
-      <footer className="w-full bg-gradient-to-t from-red-950 via-red-900/20 to-transparent pt-12 pb-8 px-6 mt-auto">
-        <div className="max-w-4xl mx-auto flex flex-col md:flex-row justify-between items-center text-red-200/40 text-xs font-montserrat tracking-widest uppercase">
-          <div className="flex items-center gap-2 mb-4 md:mb-0">
-            <Award className="w-4 h-4" />
-            <span>Seleção Oficial {new Date().getFullYear()}</span>
-          </div>
-          <p>© Grande Estreia Productions.</p>
+    <!-- Footer / Red Carpet -->
+    <footer class="w-full bg-gradient-to-t from-red-950 via-red-900/20 to-transparent pt-12 pb-8 px-6 mt-auto relative z-20">
+        <div class="max-w-4xl mx-auto flex flex-col md:flex-row justify-between items-center text-red-200/40 text-xs font-montserrat tracking-widest uppercase">
+            <div class="flex items-center gap-2 mb-4 md:mb-0">
+                <!-- Award Icon -->
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="7"/><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"/></svg>
+                <span>Seleção Oficial <span id="year"></span></span>
+            </div>
+            <p>© Grande Estreia Productions.</p>
         </div>
-      </footer>
+    </footer>
 
-      {/* Container de Animação de Partículas */}
-      {particles.map((particle) => (
-        <div
-          key={particle.id}
-          className="fixed pointer-events-none z-50 animate-fall"
-          style={{
-            left: `${particle.left}%`,
-            fontSize: `${particle.size}rem`,
-            top: '-50px',
-            transform: `rotate(${particle.rotation}deg)`,
-            animationDuration: `${particle.animationDuration}s`,
-            // Adiciona brilho neon extra se não for pipoca
-            textShadow: particle.isGlowing ? '0 0 10px gold, 0 0 20px orange' : 'none',
-            filter: particle.isGlowing ? 'brightness(1.5)' : 'none'
-          }}
-        >
-          {particle.content}
-        </div>
-      ))}
-    </div>
-  );
-}
+    <!-- Scripts JavaScript -->
+    <script>
+        // --- 1. Definir Ano Atual ---
+        document.getElementById('year').textContent = new Date().getFullYear();
+
+        // --- 2. Efeito de Holofote (Spotlight) ---
+        const spotlight = document.getElementById('spotlight');
+        
+        document.addEventListener('mousemove', (e) => {
+            // Calcula posição relativa à janela para background radial
+            const x = e.clientX;
+            const y = e.clientY;
+            
+            spotlight.style.background = `radial-gradient(800px circle at ${x}px ${y}px, rgba(255, 215, 0, 0.06), transparent 40%)`;
+        });
+
+        // --- 3. Lógica de Celebração (Partículas e Pipocas) ---
+        function handleCelebration() {
+            // Criar 25 partículas
+            for (let i = 0; i < 25; i++) {
+                createParticle();
+            }
+        }
+
+        function createParticle() {
+            const particle = document.createElement('div');
+            
+            // Decidir se é Pipoca ou Brilho
+            const isPopcorn = Math.random() > 0.4; // 60% chance pipoca
+            const content = isPopcorn 
+                ? '🍿' 
+                : ['✨', '⭐', '💫', '🔶'][Math.floor(Math.random() * 4)];
+
+            // Propriedades Aleatórias
+            const startLeft = Math.random() * 95; // posição horizontal (0 a 95%)
+            const duration = 1.5 + Math.random() * 2.5; // duração (s)
+            const rotation = Math.random() * 360; // rotação inicial
+            const size = isPopcorn 
+                ? (2 + Math.random() * 1.5) 
+                : (1.5 + Math.random() * 2);
+
+            // Estilizar elemento
+            particle.textContent = content;
+            particle.classList.add('particle');
+            particle.style.left = `${startLeft}%`;
+            particle.style.fontSize = `${size}rem`;
+            particle.style.transform = `rotate(${rotation}deg)`;
+            particle.style.animationDuration = `${duration}s`;
+
+            // Brilho Neon para não-pipocas
+            if (!isPopcorn) {
+                particle.style.textShadow = '0 0 10px gold, 0 0 20px orange';
+                particle.style.filter = 'brightness(1.5)';
+            }
+
+            // Adicionar ao corpo
+            document.body.appendChild(particle);
+
+            // Remover automaticamente após animação
+            setTimeout(() => {
+                particle.remove();
+            }, duration * 1000 + 100); // margem de segurança
+        }
+    </script>
+</body>
+</html>
