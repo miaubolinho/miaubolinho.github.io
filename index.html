@@ -5,7 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Epílogo | Despedida</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,400&family=Montserrat:wght@200;300;400&display=swap');
+        /* Adicionando a fonte Pinyon Script para a assinatura */
+        @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,400&family=Montserrat:wght@200;300;400&family=Pinyon+Script&display=swap');
         @import url('https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700&display=swap');
 
         :root {
@@ -254,6 +255,25 @@
             text-transform: uppercase;
             letter-spacing: 3px;
             opacity: 0.8;
+            /* Alterado: Removemos o alinhamento total à direita para centralizar o texto padrão */
+            width: 100%;
+            text-align: center;
+        }
+
+        /* Estilo específico para a assinatura cursiva */
+        .handwritten-signature {
+            font-family: 'Pinyon Script', cursive;
+            font-size: 1.8rem; 
+            color: var(--gold-pale);
+            margin-top: 15px;
+            text-transform: none;
+            letter-spacing: normal;
+            opacity: 1;
+            text-shadow: 0 0 8px rgba(230, 203, 179, 0.4);
+            
+            /* Alterado: Apenas o nome vai para a direita */
+            text-align: right;
+            display: block; 
         }
 
         .close-btn {
@@ -413,6 +433,8 @@
 
                 <div class="signature">
                     Eu amo vocês
+                    <!-- Assinatura Cursiva -->
+                    <div class="handwritten-signature">Giullia Ferreira Rodrigues</div>
                 </div>
             </div>
         </div>
@@ -451,7 +473,6 @@
 
 </body>
 </html>
-
      
                      
             
