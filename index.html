@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+iimport React, { useState, useEffect, useRef } from 'react';
 import { Sparkles, Calendar, Video, Award, Clapperboard, Users, Heart } from 'lucide-react';
 
 export default function App() {
@@ -55,7 +55,8 @@ export default function App() {
         : ['✨', '⭐', '💫', '🔶'][Math.floor(Math.random() * 4)];
       
       return {
-        id: Date.now() + i,
+        // Correção: ID único usando timestamp + índice + random para evitar chaves duplicadas
+        id: `${Date.now()}-${i}-${Math.random().toString(36).substr(2, 9)}`,
         left: Math.random() * 90 + 5, // posição horizontal
         animationDuration: 1.5 + Math.random() * 2.5, // velocidade variável
         rotation: Math.random() * 360,
@@ -69,7 +70,10 @@ export default function App() {
 
     // Limpeza automática
     setTimeout(() => {
-      setParticles(prev => prev.filter(p => !newParticles.find(np => np.id === p.id)));
+      setParticles(prev => {
+        const newIds = new Set(newParticles.map(p => p.id));
+        return prev.filter(p => !newIds.has(p.id));
+      });
     }, 4500);
   };
 
