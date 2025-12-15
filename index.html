@@ -90,7 +90,7 @@
             border: 1px solid var(--border);
             box-shadow: 0 10px 40px rgba(0, 0, 0, 0.9);
             transition: border-color 0.8s ease, transform 0.8s ease;
-            margin-bottom: 40px;
+            margin-bottom: 10px; /* Reduzido para aproximar o link de fallback */
             overflow: hidden;
         }
 
@@ -108,6 +108,25 @@
             border: 0;
             /* Filtro mantido para preservar a estética */
             filter: sepia(15%) contrast(95%) brightness(90%);
+        }
+
+        /* Link de Fallback (Caso o vídeo não carregue) */
+        .video-fallback {
+            margin-bottom: 40px;
+            font-size: 0.8rem;
+            opacity: 0.6;
+        }
+
+        .video-fallback a {
+            color: #666;
+            text-decoration: none;
+            transition: color 0.3s;
+            border-bottom: 1px solid transparent;
+        }
+
+        .video-fallback a:hover {
+            color: var(--text-highlight);
+            border-color: var(--text-highlight);
         }
 
         .dedication {
@@ -348,22 +367,14 @@
         </header>
 
         <div class="video-wrapper">
-            <!-- 
-                INSTRUÇÃO:
-                Substitua o link abaixo pelo link de incorporação do seu vídeo.
-                Exemplo: Se seu vídeo é https://www.youtube.com/watch?v=dQw4w9WgXcQ
-                O ID é dQw4w9WgXcQ.
-                O src deve ficar: https://www.youtube.com/embed/dQw4w9WgXcQ
-            -->
-            <iframe 
-                width="560" 
-                height="315" 
-                src="https://www.youtube.com/watch?v=YO6CwDTaeSo" 
-                title="YouTube video player" 
-                frameborder="0" 
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
-                allowfullscreen>
-            </iframe>
+            <iframe width="560" height="315" src="https://www.youtube.com/embed/YO6CwDTaeSo?si=CZ4J6NmY_ru12pqI" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+        </div>
+
+        <!-- Link de Fallback: Aparece caso o embed falhe -->
+        <div class="video-fallback">
+            <a href="https://youtu.be/YO6CwDTaeSo" target="_blank" rel="noopener noreferrer">
+                O player não abriu? Clique aqui para assistir no YouTube ↗
+            </a>
         </div>
 
         <div class="dedication">
