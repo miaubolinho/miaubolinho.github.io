@@ -1,20 +1,18 @@
-
-     import React, { useState, useEffect, useRef } from 'react';
-import { Sparkles, Calendar, Video, Ticket, Award, Clapperboard } from 'lucide-react';
+import React, { useState, useEffect, useRef } from 'react';
+import { Sparkles, Calendar, Video, Award, Clapperboard, Users, Heart } from 'lucide-react';
 
 export default function App() {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
-  const [popcorns, setPopcorns] = useState([]);
+  // Alterado de 'popcorns' para 'particles' para suportar pipocas e brilhos
+  const [particles, setParticles] = useState([]);
   const [timeLeft, setTimeLeft] = useState({ days: 0, hours: 0, minutes: 0, seconds: 0 });
   
-  // CONFIGURAÇÃO: Defina a data da estreia aqui (Formato: AAAA-MM-DDTHH:MM:SS)
-  // Atualmente definido para 1 mês à frente como exemplo
+  // Data alvo (fictícia para demonstração da contagem)
   const targetDate = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString(); 
 
-  // Referência para o container principal para o efeito de holofote
   const containerRef = useRef(null);
 
-  // Efeito de Holofote (Spotlight)
+  // Efeito de Holofote (Segue o mouse)
   useEffect(() => {
     const handleMouseMove = (e) => {
       if (containerRef.current) {
@@ -47,166 +45,50 @@ export default function App() {
     return () => clearInterval(timer);
   }, [targetDate]);
 
-  // Função para criar pipocas
-  const handlePopcornBlast = () => {
-    const newPopcorns = Array.from({ length: 10 }).map((_, i) => ({
-      id: Date.now() + i,
-      left: Math.random() * 100, // posição horizontal aleatória
-      animationDuration: 1 + Math.random() * 2, // velocidade aleatória
-      rotation: Math.random() * 360,
-    }));
+  // Função unificada para Celebrar (Pipocas + Brilhos)
+  const handleCelebration = () => {
+    // Cria 25 partículas de uma vez (mistura de pipoca e brilhos)
+    const newParticles = Array.from({ length: 25 }).map((_, i) => {
+      const isPopcorn = Math.random() > 0.4; // 60% pipoca, 40% brilho
+      const content = isPopcorn 
+        ? '🍿' 
+        : ['✨', '⭐', '💫', '🔶'][Math.floor(Math.random() * 4)];
+      
+      return {
+        id: Date.now() + i,
+        left: Math.random() * 90 + 5, // posição horizontal
+        animationDuration: 1.5 + Math.random() * 2.5, // velocidade variável
+        rotation: Math.random() * 360,
+        size: isPopcorn ? (2 + Math.random() * 1.5) : (1.5 + Math.random() * 2),
+        content,
+        isGlowing: !isPopcorn // Brilhos ganham efeito neon
+      };
+    });
     
-    setPopcorns(prev => [...prev, ...newPopcorns]);
+    setParticles(prev => [...prev, ...newParticles]);
 
-    // Limpar pipocas antigas após a animação
+    // Limpeza automática
     setTimeout(() => {
-      setPopcorns(prev => prev.filter(p => !newPopcorns.find(np => np.id === p.id)));
-    }, 3000);
+      setParticles(prev => prev.filter(p => !newParticles.find(np => np.id === p.id)));
+    }, 4500);
   };
 
   return (
     <div 
       ref={containerRef}
-      className="min-h-screen bg-neutral-950 text-neutral-100 flex flex-col relative overflow-hidden font-sans selection:bg-amber-500 selection:text-black"
+      className="min-h-screen bg-[#050505] text-neutral-100 flex flex-col relative overflow-hidden font-sans selection:bg-yellow-600 selection:text-black"
     >
-      {/* Background Noise/Texture */}
-      <div className="absolute inset-0 opacity-5 pointer-events-none bg-[url('https://www.transparenttextures.com/patterns/stardust.png')]"></div>
-
-      {/* Spotlight Effect Layer */}
-      <div 
-        className="pointer-events-none absolute inset-0 z-0 transition-opacity duration-300"
-        style={{
-          background: `radial-gradient(600px circle at ${mousePosition.x}px ${mousePosition.y}px, rgba(251, 191, 36, 0.08), transparent 40%)`
-        }}
-      />
-
-      {/* Decorative Golden Rays */}
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-96 bg-gradient-to-b from-amber-500/10 to-transparent blur-3xl -z-10"></div>
-
-      <main className="flex-grow flex flex-col items-center justify-center p-6 z-10 w-full max-w-4xl mx-auto text-center space-y-12">
+      {/* Importação de Fontes via Style Tag */}
+      <style>{`
+        @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=Montserrat:wght@300;400;600&display=swap');
         
-        {/* Header Section */}
-        <div className="space-y-6 animate-fade-in-up">
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-amber-500/30 bg-amber-500/10 text-amber-400 text-sm font-medium tracking-widest uppercase mb-4 backdrop-blur-sm">
-            <Sparkles className="w-4 h-4 animate-pulse" />
-            Em Manutenção
-            <Sparkles className="w-4 h-4 animate-pulse" />
-          </div>
-          
-          <h1 className="text-5xl md:text-7xl font-extrabold tracking-tight">
-            <span className="block text-white mb-2 font-serif">O GRANDE</span>
-            <span className="bg-clip-text text-transparent bg-gradient-to-r from-amber-200 via-amber-400 to-amber-600 drop-shadow-[0_0_15px_rgba(245,158,11,0.5)] font-serif">
-              EVENTO DO ANO
-            </span>
-          </h1>
-        </div>
-
-        {/* Date & Main Message */}
-        <div className="relative p-1">
-          {/* Gold Border Gradient */}
-          <div className="absolute inset-0 bg-gradient-to-r from-transparent via-amber-500 to-transparent opacity-50 blur-sm"></div>
-          
-          <div className="relative bg-neutral-900/80 border-y border-amber-500/30 backdrop-blur-md p-8 md:p-12 rounded-xl shadow-2xl space-y-8">
-            <div className="space-y-4">
-              <h2 className="text-2xl md:text-3xl font-light text-amber-100 uppercase tracking-widest">
-                Aguardar Data
-              </h2>
-              <div className="flex flex-wrap justify-center items-center gap-4 text-4xl md:text-6xl font-bold text-amber-400 font-serif">
-                 <Calendar className="w-8 h-8 md:w-12 md:h-12 text-amber-600" />
-                 <span>XX/XX/XXXX</span>
-              </div>
-              <p className="text-sm text-neutral-400 uppercase tracking-[0.2em] mt-2">
-                Grande Estreia Mundial
-              </p>
-            </div>
-
-            <div className="h-px w-full bg-gradient-to-r from-transparent via-amber-700 to-transparent"></div>
-
-            <div className="space-y-6">
-              <div className="flex items-center justify-center gap-3 text-red-500 animate-pulse">
-                <Video className="w-6 h-6" />
-                <span className="font-bold tracking-wider">AO VIVO</span>
-              </div>
-              
-              <p className="text-xl md:text-2xl font-serif text-white leading-relaxed max-w-2xl mx-auto">
-                "REACT AO VIVO COM TODAS AS CONVIDADAS PRESENTES NO <span className="text-blue-400 font-bold">GOOGLE MEET</span>"
-              </p>
-
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm text-amber-200/80 mt-8">
-                <div className="flex flex-col items-center gap-2 p-4 bg-white/5 rounded-lg border border-white/10 hover:border-amber-500/50 transition-colors">
-                  <span className="text-2xl">🍿</span>
-                  <span>PREPARE A PIPOCA</span>
-                </div>
-                <div className="flex flex-col items-center gap-2 p-4 bg-white/5 rounded-lg border border-white/10 hover:border-amber-500/50 transition-colors">
-                  <span className="text-2xl">👨‍👩‍👧‍👦</span>
-                  <span>CHAME A FAMÍLIA</span>
-                </div>
-                <div className="flex flex-col items-center gap-2 p-4 bg-white/5 rounded-lg border border-white/10 hover:border-amber-500/50 transition-colors">
-                  <span className="text-2xl">🤧</span>
-                  <span>TRAGA OS LENÇOS</span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* Countdown Timer (Visual) */}
-        <div className="grid grid-cols-4 gap-4 md:gap-8 w-full max-w-2xl text-amber-500">
-            {Object.entries(timeLeft).map(([unit, value]) => (
-              <div key={unit} className="flex flex-col items-center">
-                <div className="text-2xl md:text-4xl font-bold font-mono bg-neutral-900 border border-amber-900/50 rounded-lg w-full py-3 shadow-[0_0_10px_rgba(251,191,36,0.1)]">
-                  {value.toString().padStart(2, '0')}
-                </div>
-                <div className="text-xs uppercase tracking-widest mt-2 text-neutral-500">{unit}</div>
-              </div>
-            ))}
-        </div>
-
-        {/* Interactive Button */}
-        <button 
-          onClick={handlePopcornBlast}
-          className="group relative px-8 py-4 bg-gradient-to-r from-red-700 to-red-600 text-white font-bold tracking-wider uppercase rounded-full shadow-[0_0_20px_rgba(220,38,38,0.4)] hover:shadow-[0_0_40px_rgba(220,38,38,0.6)] hover:scale-105 transition-all duration-300 active:scale-95 overflow-hidden"
-        >
-          <span className="relative z-10 flex items-center gap-2">
-            <Clapperboard className="w-5 h-5 group-hover:rotate-12 transition-transform" />
-            Quero Pipoca Agora!
-          </span>
-          <div className="absolute inset-0 bg-gradient-to-r from-yellow-400/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-        </button>
-
-      </main>
-
-      {/* Footer / Red Carpet */}
-      <footer className="w-full bg-gradient-to-t from-red-900 to-transparent pt-12 pb-6 px-6 mt-auto">
-        <div className="max-w-4xl mx-auto flex flex-col md:flex-row justify-between items-center text-red-200/60 text-sm">
-          <div className="flex items-center gap-2 mb-4 md:mb-0">
-            <Award className="w-4 h-4" />
-            <span>Official Selection {new Date().getFullYear()}</span>
-          </div>
-          <p>© Todos os direitos reservados aos organizadores do evento.</p>
-        </div>
-      </footer>
-
-      {/* Popcorn Animation Container */}
-      {popcorns.map((popcorn) => (
-        <div
-          key={popcorn.id}
-          className="fixed text-4xl pointer-events-none z-50 animate-fall"
-          style={{
-            left: `${popcorn.left}%`,
-            top: '-50px',
-            transform: `rotate(${popcorn.rotation}deg)`,
-            animationDuration: `${popcorn.animationDuration}s`
-          }}
-        >
-          🍿
-        </div>
-      ))}
-
-      <style jsx global>{`
+        .font-cinzel { font-family: 'Cinzel', serif; }
+        .font-montserrat { font-family: 'Montserrat', sans-serif; }
+        
         @keyframes fall {
-          0% { top: -50px; transform: rotate(0deg); opacity: 1; }
-          100% { top: 100vh; transform: rotate(360deg); opacity: 0; }
+          0% { top: -50px; transform: rotate(0deg) scale(0.5); opacity: 1; }
+          50% { opacity: 1; }
+          100% { top: 110vh; transform: rotate(720deg) scale(1); opacity: 0; }
         }
         .animate-fall {
           animation-name: fall;
@@ -220,7 +102,169 @@ export default function App() {
         .animate-fade-in-up {
           animation: fade-in-up 1s ease-out forwards;
         }
+        
+        /* Shimmer effect for the ticket */
+        @keyframes shimmer {
+          100% { transform: translateX(100%); }
+        }
+        .shimmer-effect::after {
+          content: '';
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          background: linear-gradient(90deg, transparent, rgba(255,215,0,0.2), transparent);
+          transform: translateX(-100%);
+          animation: shimmer 2s infinite;
+        }
       `}</style>
+
+      {/* Camada de Ruído (Noise Texture) */}
+      <div className="absolute inset-0 opacity-10 pointer-events-none" style={{ backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.05'/%3E%3C/svg%3E")` }}></div>
+
+      {/* Holofote Interativo */}
+      <div 
+        className="pointer-events-none absolute inset-0 z-0 transition-opacity duration-300"
+        style={{
+          background: `radial-gradient(800px circle at ${mousePosition.x}px ${mousePosition.y}px, rgba(255, 215, 0, 0.06), transparent 40%)`
+        }}
+      />
+
+      {/* Raios Dourados Superiores */}
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-[50vh] bg-gradient-to-b from-yellow-600/10 to-transparent blur-3xl -z-10"></div>
+
+      <main className="flex-grow flex flex-col items-center justify-center p-4 z-10 w-full max-w-5xl mx-auto text-center space-y-10">
+        
+        {/* Cabeçalho de Manutenção */}
+        <div className="space-y-6 animate-fade-in-up w-full">
+          <div className="inline-flex items-center gap-3 px-6 py-2 rounded-full border border-yellow-500/30 bg-black/40 text-yellow-500 text-xs md:text-sm font-bold tracking-[0.2em] uppercase mb-4 backdrop-blur-sm shadow-[0_0_15px_rgba(234,179,8,0.2)]">
+            <Sparkles className="w-4 h-4 animate-pulse text-yellow-300" />
+            Em Manutenção
+            <Sparkles className="w-4 h-4 animate-pulse text-yellow-300" />
+          </div>
+          
+          <h1 className="font-cinzel text-5xl md:text-7xl lg:text-8xl font-black tracking-tight leading-none">
+            <span className="block text-white/90 mb-2 drop-shadow-xl">GRANDE</span>
+            <span className="bg-clip-text text-transparent bg-gradient-to-b from-[#cfc09f] via-[#ffecb3] to-[#3a2c0f] drop-shadow-[0_4px_10px_rgba(255,215,0,0.3)]">
+              ESTRÉIA
+            </span>
+          </h1>
+        </div>
+
+        {/* Card Principal */}
+        <div className="relative p-1 w-full max-w-4xl">
+          {/* Borda Dourada Brilhante */}
+          <div className="absolute inset-0 bg-gradient-to-r from-transparent via-yellow-600/50 to-transparent opacity-60 blur-sm"></div>
+          
+          <div className="relative bg-[#0a0a0a]/90 border-y border-yellow-500/30 backdrop-blur-xl p-8 md:p-12 rounded-xl shadow-2xl space-y-10 overflow-hidden">
+            
+            {/* Seção da Data (Ticket) */}
+            <div className="space-y-6">
+              <h2 className="font-montserrat text-sm md:text-base text-gray-400 uppercase tracking-[0.4em]">
+                Aguardar Data
+              </h2>
+              
+              <div 
+                className="relative inline-block group cursor-pointer"
+                onClick={handleCelebration}
+              >
+                <div className="absolute inset-0 bg-yellow-500 blur-xl opacity-20 group-hover:opacity-40 transition-duration-500"></div>
+                <div className="relative bg-black border border-yellow-500/60 px-8 py-4 md:px-12 md:py-6 overflow-hidden shimmer-effect shadow-lg transform transition hover:scale-105 active:scale-95 duration-300">
+                  <div className="flex items-center justify-center gap-4 text-3xl md:text-5xl font-cinzel font-bold text-white">
+                     <Calendar className="w-8 h-8 md:w-10 md:h-10 text-yellow-500" />
+                     <span>XX / XX / XXXX</span>
+                  </div>
+                  <p className="text-[10px] text-yellow-500 uppercase tracking-[0.4em] mt-3 font-montserrat">Save the Date</p>
+                </div>
+              </div>
+            </div>
+
+            <div className="h-px w-2/3 mx-auto bg-gradient-to-r from-transparent via-yellow-800 to-transparent"></div>
+
+            {/* Descrição do Evento */}
+            <div className="space-y-8">
+              <div className="flex flex-col md:flex-row items-center justify-center gap-3 text-red-500 animate-pulse">
+                <div className="flex items-center gap-2">
+                    <Video className="w-6 h-6" />
+                    <span className="font-cinzel font-bold tracking-wider text-xl">REACT AO VIVO</span>
+                </div>
+              </div>
+              
+              <p className="font-montserrat text-lg md:text-2xl text-gray-200 leading-relaxed max-w-3xl mx-auto">
+                COM <span className="text-yellow-400 font-bold">TODAS AS CONVIDADAS</span> PRESENTES NO <br className="hidden md:block"/>
+                <span className="inline-flex items-center gap-2 mt-2 px-3 py-1 rounded bg-blue-900/30 text-blue-200 border border-blue-500/30 font-bold text-base">
+                    GOOGLE MEET
+                </span>
+              </p>
+
+              {/* Grid de Ícones e Texto */}
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-sm text-yellow-100/90 mt-8 pt-8 border-t border-white/5">
+                <div className="flex flex-col items-center gap-3 p-4 hover:bg-white/5 rounded-lg transition-colors group">
+                  <span className="text-4xl drop-shadow-md group-hover:scale-110 transition-transform duration-300">🍿</span>
+                  <span className="font-cinzel font-bold tracking-widest text-center">PREPARE SUA<br/>PIPOCA</span>
+                </div>
+                <div className="flex flex-col items-center gap-3 p-4 hover:bg-white/5 rounded-lg transition-colors group">
+                  <div className="bg-gray-800 p-2 rounded-full group-hover:bg-yellow-900/40 transition-colors">
+                      <Users className="w-8 h-8 text-yellow-500" />
+                  </div>
+                  <span className="font-cinzel font-bold tracking-widest text-center">CHAME SEUS FAMILIARES<br/>E AMIGOS</span>
+                </div>
+                <div className="flex flex-col items-center gap-3 p-4 hover:bg-white/5 rounded-lg transition-colors group">
+                  <div className="bg-gray-800 p-2 rounded-full group-hover:bg-yellow-900/40 transition-colors">
+                      <Heart className="w-8 h-8 text-yellow-500" />
+                  </div>
+                  <span className="font-cinzel font-bold tracking-widest text-center">NÃO SE ESQUEÇA<br/>DOS LENÇOS</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Botão Interativo Principal */}
+        <button 
+          onClick={handleCelebration}
+          className="group relative px-10 py-5 bg-gradient-to-r from-red-800 to-red-600 text-white font-cinzel font-bold tracking-wider uppercase rounded-full shadow-[0_0_30px_rgba(185,28,28,0.4)] hover:shadow-[0_0_50px_rgba(220,38,38,0.6)] hover:scale-105 transition-all duration-300 active:scale-95 overflow-hidden border border-red-400/50"
+        >
+          <span className="relative z-10 flex items-center gap-3 text-lg">
+            <Clapperboard className="w-6 h-6 group-hover:-rotate-12 transition-transform" />
+            Celebrar Estreia
+          </span>
+          <div className="absolute inset-0 bg-gradient-to-r from-yellow-400/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+        </button>
+
+      </main>
+
+      {/* Footer / Red Carpet */}
+      <footer className="w-full bg-gradient-to-t from-red-950 via-red-900/20 to-transparent pt-12 pb-8 px-6 mt-auto">
+        <div className="max-w-4xl mx-auto flex flex-col md:flex-row justify-between items-center text-red-200/40 text-xs font-montserrat tracking-widest uppercase">
+          <div className="flex items-center gap-2 mb-4 md:mb-0">
+            <Award className="w-4 h-4" />
+            <span>Seleção Oficial {new Date().getFullYear()}</span>
+          </div>
+          <p>© Grande Estreia Productions.</p>
+        </div>
+      </footer>
+
+      {/* Container de Animação de Partículas */}
+      {particles.map((particle) => (
+        <div
+          key={particle.id}
+          className="fixed pointer-events-none z-50 animate-fall"
+          style={{
+            left: `${particle.left}%`,
+            fontSize: `${particle.size}rem`,
+            top: '-50px',
+            transform: `rotate(${particle.rotation}deg)`,
+            animationDuration: `${particle.animationDuration}s`,
+            // Adiciona brilho neon extra se não for pipoca
+            textShadow: particle.isGlowing ? '0 0 10px gold, 0 0 20px orange' : 'none',
+            filter: particle.isGlowing ? 'brightness(1.5)' : 'none'
+          }}
+        >
+          {particle.content}
+        </div>
+      ))}
     </div>
   );
 }
