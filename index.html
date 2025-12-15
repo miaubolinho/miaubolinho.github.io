@@ -1,399 +1,457 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Relatório Audiológico Completo</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <title>Epílogo | Despedida</title>
     <style>
-        .audiogram-grid { stroke: #e5e7eb; stroke-width: 1; }
-        @media print {
-            body { background: white; padding: 0; }
-            .shadow-lg, .shadow-xl { box-shadow: none; }
-            .no-print { display: none; }
-            .page-break { page-break-before: always; }
+        @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,400&family=Montserrat:wght@200;300;400&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700&display=swap');
+
+        :root {
+            --bg-color: #080808;
+            --card-bg: #111111;
+            --text-main: #a0a0a0;
+            --text-highlight: #dcdcdc;
+            --accent: #2a2a35;
+            --border: #222;
+            
+            /* Variáveis da Página Secreta (Vinho/Místico) */
+            --wine-dark: #1a0505;
+            --wine-light: #4a0e16;
+            --gold-pale: #e6cbb3;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            font-family: 'Montserrat', sans-serif;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            overflow-x: hidden;
+            transition: background-color 1s ease;
+        }
+
+        /* --- ESTILOS PRINCIPAIS (LADO FRIO) --- */
+
+        .container {
+            width: 100%;
+            max-width: 750px;
+            text-align: center;
+            opacity: 0;
+            animation: fadeIn 3.5s ease-out forwards;
+            position: relative;
+            z-index: 1;
+        }
+
+        h1 {
+            font-family: 'Cormorant Garamond', serif;
+            font-weight: 300;
+            font-size: 3rem;
+            letter-spacing: 0.15em;
+            color: var(--text-highlight);
+            margin-bottom: 5px;
+            text-transform: lowercase;
+            position: relative;
+            display: inline-block;
+        }
+
+        h1::after {
+            content: '';
+            display: block;
+            width: 60%;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--accent), transparent);
+            margin: 10px auto 0;
+        }
+
+        p.subtitle {
+            font-family: 'Cormorant Garamond', serif;
+            font-style: italic;
+            font-size: 1.2rem;
+            color: #555;
+            margin-bottom: 50px;
+            letter-spacing: 0.05em;
+        }
+
+        .video-wrapper {
+            position: relative;
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            padding: 15px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.9);
+            transition: border-color 0.8s ease, transform 0.8s ease;
+            margin-bottom: 40px;
+        }
+
+        .video-wrapper:hover {
+            border-color: #333;
+            transform: translateY(-2px);
+        }
+
+        video {
+            width: 100%;
+            height: auto;
+            display: block;
+            filter: sepia(15%) contrast(95%) brightness(90%);
+            background-color: #000;
+        }
+
+        .dedication {
+            font-size: 0.95rem;
+            line-height: 2;
+            letter-spacing: 0.08em;
+            color: var(--text-main);
+            max-width: 580px;
+            margin: 0 auto;
+            text-align: justify;
+            text-align-last: center;
+        }
+
+        .dedication strong {
+            color: var(--text-highlight);
+            font-weight: 400;
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.1rem;
+            border-bottom: 1px solid #333;
+        }
+
+        footer {
+            margin-top: 80px;
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 0.9rem;
+            color: #333;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            border-top: 1px solid #111;
+            padding-top: 20px;
+            width: 50%;
+            margin-left: auto;
+            margin-right: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            align-items: center;
+        }
+
+        /* Botão Místico Secreto */
+        .secret-btn {
+            background: none;
+            border: none;
+            color: #333;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: color 0.5s ease, text-shadow 0.5s ease;
+            padding: 10px;
+        }
+
+        .secret-btn:hover {
+            color: #5a1a25; /* Um leve tom de vinho ao passar o mouse */
+            text-shadow: 0 0 5px #5a1a25;
+        }
+
+        /* --- ESTILOS DA PÁGINA BÔNUS (LADO QUENTE/MÍSTICO) --- */
+
+        .bonus-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 50% 30%, var(--wine-light) 0%, var(--wine-dark) 90%);
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 1.5s ease-in-out, visibility 1.5s;
+            /* MUDANÇA: O scroll agora é controlado aqui para evitar cortes */
+            overflow-y: auto; 
+            display: block; 
+        }
+
+        .bonus-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .scroll-container {
+            /* MUDANÇA: min-height garante que centralize se for pequeno, mas estique se for grande */
+            min-height: 100%;
+            width: 100%;
+            padding: 60px 20px; /* Espaço extra em cima e embaixo para não colar nas bordas */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .poem-container {
+            width: 100%;
+            max-width: 600px;
+            text-align: center;
+            color: var(--gold-pale);
+            position: relative;
+            padding: 60px 40px; 
+            
+            /* Efeito de Moldura Elaborada */
+            border: 3px solid var(--gold-pale); /* Borda um pouco mais grossa */
+            outline: 1px solid var(--gold-pale);
+            outline-offset: -12px; /* Ajuste para ficar mais elegante */
+            
+            box-shadow: 
+                0 0 50px rgba(0,0,0,0.9), 
+                inset 0 0 80px rgba(26, 5, 5, 0.9); 
+            
+            background: rgba(26, 5, 5, 0.95); /* Fundo mais opaco para leitura */
+            backdrop-filter: blur(5px);
+            
+            /* Garante que o container abrace todo o conteúdo */
+            height: auto; 
+            box-sizing: border-box;
+        }
+
+        /* Decoração extra nos cantos (pseudo-elementos opcional, mas o outline já resolve bem) */
+        
+        /* Lua decorativa no topo do poema */
+        .moon-icon {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            display: block;
+            text-shadow: 0 0 20px rgba(230, 203, 179, 0.4);
+            animation: pulseMoon 4s infinite ease-in-out;
+        }
+
+        .poem-title {
+            font-family: 'Cinzel Decorative', cursive;
+            font-size: 2rem;
+            margin-bottom: 30px;
+            color: var(--gold-pale);
+            text-shadow: 0 0 10px rgba(74, 14, 22, 0.8);
+            border-bottom: 1px solid rgba(230, 203, 179, 0.3);
+            display: inline-block;
+            padding-bottom: 10px;
+        }
+
+        .poem-body {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.3rem;
+            line-height: 1.6;
+            font-style: italic;
+        }
+
+        .stanza {
+            margin-bottom: 25px;
+        }
+
+        .signature {
+            margin-top: 40px;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            opacity: 0.8;
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: none;
+            border: none;
+            color: var(--gold-pale);
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 2rem;
+            line-height: 1;
+            cursor: pointer;
+            opacity: 0.6;
+            transition: opacity 0.3s, transform 0.3s;
+            z-index: 10;
+        }
+
+        .close-btn:hover { 
+            opacity: 1; 
+            transform: scale(1.1);
+        }
+
+        /* Partículas (Velas/Fagulhas) */
+        .particles {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none;
+            overflow: hidden;
+        }
+        .particle {
+            position: absolute;
+            bottom: -10px;
+            width: 3px;
+            height: 3px;
+            background: #ff6b6b;
+            border-radius: 50%;
+            box-shadow: 0 0 5px #ff6b6b;
+            animation: floatUp 8s linear infinite;
+            opacity: 0;
+        }
+
+        @keyframes fadeIn {
+            0% { opacity: 0; filter: blur(5px); transform: translateY(30px); }
+            100% { opacity: 1; filter: blur(0); transform: translateY(0); }
+        }
+
+        @keyframes pulseMoon {
+            0%, 100% { text-shadow: 0 0 20px rgba(230, 203, 179, 0.2); opacity: 0.8; }
+            50% { text-shadow: 0 0 35px rgba(230, 203, 179, 0.6); opacity: 1; }
+        }
+
+        @keyframes floatUp {
+            0% { transform: translateY(0) translateX(0); opacity: 0; }
+            20% { opacity: 0.8; }
+            80% { opacity: 0.5; }
+            100% { transform: translateY(-100vh) translateX(20px); opacity: 0; }
+        }
+
+        @media (max-width: 600px) {
+            h1 { font-size: 2.2rem; }
+            .container { width: 95%; }
+            .dedication { text-align: left; padding: 0 15px; }
+            /* Ajuste da moldura no mobile */
+            .poem-container { 
+                padding: 30px 20px; 
+                outline-offset: -6px;
+                border-width: 1px;
+            }
+            .poem-body { font-size: 1.1rem; }
         }
     </style>
 </head>
-<body class="bg-gray-100 p-4 font-sans text-gray-800">
+<body>
 
-    <div class="max-w-4xl mx-auto bg-white shadow-xl rounded-xl overflow-hidden border border-gray-200">
+    <!-- Container Principal (O Lado Frio/Distante) -->
+    <div class="container" id="main-content">
         
-        <!-- Cabeçalho -->
-        <div class="bg-slate-900 text-white p-6">
-            <div class="flex justify-between items-start">
-                <div>
-                    <h1 class="text-3xl font-bold uppercase tracking-wide">Avaliação Audiológica</h1>
-                    <p class="text-sm text-slate-400 mt-1">Relatório Clínico Integrado</p>
-                </div>
-                <div class="text-right text-xs text-slate-400">
-                    <p>Data: 24/05/2024</p>
-                    <p>Protocolo: #8921-OD</p>
-                </div>
-            </div>
-            
-            <div class="mt-6 pt-4 border-t border-slate-700 grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
-                <div>
-                    <p><span class="text-slate-400 font-semibold">Paciente:</span> Sr. João da Silva (69 anos)</p>
-                    <p><span class="text-slate-400 font-semibold">Histórico:</span> Pós-op Mastoidectomia Radical (OD).</p>
-                </div>
-                <div>
-                    <p><span class="text-slate-400 font-semibold">Queixa:</span> Mastoidectomia, secreção fétida, hipoacusia e tontura (OD) e sensação de ouvido tapado (OE).</p>
-                </div>
-            </div>
+        <header>
+            <h1>Epílogo</h1>
+            <p class="subtitle">o que resta, permanece</p>
+        </header>
+
+        <div class="video-wrapper">
+            <video controls preload="metadata">
+                <source src="video_despedida.mp4" type="video/mp4">
+                <p style="color: #444; padding: 20px;">
+                    Seu navegador não suporta a exibição deste vídeo.<br>
+                    É como se a memória tivesse se perdido.
+                </p>
+            </video>
         </div>
 
-        <!-- Conteúdo Principal -->
-        <div class="p-6 space-y-8">
+        <div class="dedication">
+            <p>
+                Não sou de muitas palavras, nem de grandes gestos. O tempo passa e a maioria das coisas se dissolve no silêncio inevitável. 
+                Mas, para aqueles que caminharam ao meu lado na escuridão e na luz, deixo este breve registro.
+                <br><br>
+                Aos poucos e raros amigos: <strong>vocês são a minha memória viva.</strong>
+            </p>
+        </div>
 
-            <!-- Seção 1: Audiometria Tonal -->
-            <div>
-                <h2 class="text-xl font-bold text-gray-800 mb-4 border-l-4 border-slate-800 pl-3 flex justify-between items-center">
-                    Audiometria Tonal Limiar
-                    <span class="text-xs font-normal bg-gray-200 px-2 py-1 rounded text-gray-600">Transdutores: Supra-aurais</span>
-                </h2>
+        <footer>
+            <span>2021 — 2025</span>
+            <!-- O Segredo: Botão para o Pacto -->
+            <button class="secret-btn" onclick="toggleSecret()" title="Um segredo...">☾</button>
+        </footer>
+
+    </div>
+
+    <!-- Overlay do Pacto (O Lado Quente/Místico) -->
+    <div class="bonus-overlay" id="secret-overlay">
+        <!-- Efeito de fagulhas subindo -->
+        <div class="particles" id="particles"></div>
+
+        <div class="scroll-container">
+            <div class="poem-container">
+                <button class="close-btn" onclick="toggleSecret()">×</button>
                 
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                    <!-- Orelha Direita -->
-                    <div class="flex flex-col items-center">
-                        <div class="flex items-center gap-2 mb-2">
-                            <h3 class="text-lg font-bold text-red-600">Orelha Direita (OD)</h3>
-                            <span class="text-[10px] bg-red-100 text-red-800 px-2 py-0.5 rounded border border-red-200 font-bold">MASCARADA</span>
-                        </div>
-                        <canvas id="canvasOD" width="320" height="320" class="border border-gray-300 bg-white shadow-sm mb-3"></canvas>
-                        
-                        <!-- Mini Tabela Mascaramento -->
-                        <div class="w-full max-w-[320px]">
-                            <p class="text-[10px] font-bold text-gray-500 mb-1">Nível de Mascaramento (dB NB na OE):</p>
-                            <div class="grid grid-cols-6 text-[10px] border border-gray-300 text-center">
-                                <div class="bg-gray-100 font-bold p-1">Hz</div>
-                                <div class="bg-gray-50 p-1">500</div>
-                                <div class="bg-gray-50 p-1">1k</div>
-                                <div class="bg-gray-50 p-1">2k</div>
-                                <div class="bg-gray-50 p-1">3k</div>
-                                <div class="bg-gray-50 p-1">4k</div>
-                                
-                                <div class="bg-gray-100 font-bold p-1 border-t text-red-600">VA</div>
-                                <div class="border-t p-1">40</div>
-                                <div class="border-t p-1">45</div>
-                                <div class="border-t p-1">50</div>
-                                <div class="border-t p-1">50</div>
-                                <div class="border-t p-1">55</div>
-                            </div>
-                        </div>
+                <span class="moon-icon">🌕</span>
+                
+                <h2 class="poem-title">O Pacto das Almas Irmãs</h2>
+                
+                <div class="poem-body">
+                    <div class="stanza">
+                        Não foi o acaso que cruzou nossas vidas,<br>
+                        Mas a força antiga de almas unidas.<br>
+                        Onde antes havia o caminhar sozinhas,<br>
+                        Agora entrelaçam-se as tuas mãos e as minhas.
                     </div>
 
-                    <!-- Orelha Esquerda -->
-                    <div class="flex flex-col items-center">
-                        <div class="flex items-center gap-2 mb-2">
-                            <h3 class="text-lg font-bold text-blue-600">Orelha Esquerda (OE)</h3>
-                        </div>
-                        <canvas id="canvasOE" width="320" height="320" class="border border-gray-300 bg-white shadow-sm mb-3"></canvas>
-                         <!-- Mini Tabela Mascaramento -->
-                         <div class="w-full max-w-[320px]">
-                            <p class="text-[10px] font-bold text-gray-500 mb-1">Nível de Mascaramento (dB NB na OD):</p>
-                            <div class="grid grid-cols-6 text-[10px] border border-gray-300 text-center">
-                                <div class="bg-gray-100 font-bold p-1">Hz</div>
-                                <div class="bg-gray-50 p-1">500</div>
-                                <div class="bg-gray-50 p-1">1k</div>
-                                <div class="bg-gray-50 p-1">2k</div>
-                                <div class="bg-gray-50 p-1">3k</div>
-                                <div class="bg-gray-50 p-1">4k</div>
-                                
-                                <div class="bg-gray-100 font-bold p-1 border-t text-blue-600">VO</div>
-                                <div class="border-t p-1">50</div>
-                                <div class="border-t p-1">45</div>
-                                <div class="border-t p-1">55</div>
-                                <div class="border-t p-1">60</div>
-                                <div class="border-t p-1">60</div>
-                            </div>
-                        </div>
+                    <div class="stanza">
+                        Que a minha coragem alimente a tua fé,<br>
+                        E a tua firmeza me mantenha de pé.<br>
+                        Eu sou o teu porto se o mar agitar,<br>
+                        Tu és o meu solo se eu precisar pousar.
                     </div>
+
+                    <div class="stanza">
+                        Não há tempestade, nem medo, nem dor,<br>
+                        Que quebre este elo forjado em amor.<br>
+                        Somos o refúgio, o colo, a raiz,<br>
+                        O espelho onde a outra se enxerga feliz.
+                    </div>
+
+                    <div class="stanza">
+                        Mulheres, guerreiras, irmãs de jornada,<br>
+                        Nossa união é a nossa espada.<br>
+                        Que sejamos sempre, no riso ou na prece,<br>
+                        A força que cura e que nunca esquece.
+                    </div>
+                    
+                    <div class="stanza" style="margin-top: 30px; color: #fff;">
+                        Que assim seja, e assim se faça.
+                    </div>
+                </div>
+
+                <div class="signature">
+                    Eu amo vocês
                 </div>
             </div>
-
-            <!-- Seção 2: Logoaudiometria -->
-            <div class="bg-slate-50 p-4 rounded-lg border border-slate-200">
-                <h2 class="text-lg font-bold text-gray-800 mb-3 flex items-center gap-2">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z"></path></svg>
-                    Logoaudiometria
-                </h2>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <!-- OD -->
-                    <div class="border-l-4 border-red-500 pl-3">
-                        <h4 class="text-sm font-bold text-red-700 uppercase mb-1">Orelha Direita</h4>
-                        <div class="grid grid-cols-2 gap-x-4 text-sm">
-                            <div class="text-gray-600">SRT:</div>
-                            <div class="font-bold">50 dB</div>
-                            <div class="text-gray-600">IPRF (Mono):</div>
-                            <div class="font-bold">88% <span class="text-xs font-normal text-gray-500">(a 90dB)</span></div>
-                            <div class="text-gray-600 text-xs mt-1">Mascaramento:</div>
-                            <div class="text-xs mt-1 text-red-600">60 dB Speech Noise</div>
-                        </div>
-                    </div>
-                    <!-- OE -->
-                    <div class="border-l-4 border-blue-500 pl-3">
-                        <h4 class="text-sm font-bold text-blue-700 uppercase mb-1">Orelha Esquerda</h4>
-                        <div class="grid grid-cols-2 gap-x-4 text-sm">
-                            <div class="text-gray-600">SRT:</div>
-                            <div class="font-bold">40 dB</div>
-                            <div class="text-gray-600">IPRF (Mono):</div>
-                            <div class="font-bold">100% <span class="text-xs font-normal text-gray-500">(a 80dB)</span></div>
-                            <div class="text-gray-600 text-xs mt-1">Mascaramento:</div>
-                            <div class="text-xs mt-1 text-blue-600">55 dB Speech Noise</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Seção 3: Imitanciometria -->
-            <div>
-                <h2 class="text-xl font-bold text-gray-800 mb-4 border-l-4 border-slate-800 pl-3">Imitanciometria</h2>
-                <div class="flex flex-col md:flex-row gap-6 items-end">
-                    <div class="flex-1 flex flex-col items-center">
-                        <!-- Canvas OD agora será "Não Testado" -->
-                        <canvas id="canvasTympOD" width="280" height="150" class="border border-gray-300 bg-gray-50 mb-2"></canvas>
-                        <p class="text-xs font-bold text-red-600">OD: Não Realizado / Cavidade Radical</p>
-                    </div>
-                    <div class="flex-1 flex flex-col items-center">
-                        <canvas id="canvasTympOE" width="280" height="150" class="border border-gray-300 bg-white mb-2"></canvas>
-                        <p class="text-xs font-bold text-blue-600">OE: Curva Tipo B (Líquido)</p>
-                    </div>
-                </div>
-                <div class="mt-2 text-center text-sm text-gray-500 bg-gray-50 py-2 rounded">
-                    Reflexos Estapedianos Contralaterais: <strong>Ausentes Bilateralmente</strong>
-                </div>
-            </div>
-
-            <!-- Seção 4: Conclusão Detalhada -->
-            <div class="bg-slate-50 border border-slate-200 rounded-lg p-6 print:break-inside-avoid">
-                <h3 class="text-lg font-bold text-slate-900 mb-6 flex items-center gap-2 pb-2 border-b border-slate-300">
-                    Conclusão e Justificativa Clínica
-                </h3>
-
-                <!-- Parte 1: Justificativa do Mascaramento -->
-                <div class="mb-6">
-                    <h4 class="font-bold text-slate-800 text-sm mb-2 uppercase tracking-wide">1. Por que realizamos o Mascaramento?</h4>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div class="bg-white p-3 rounded border border-gray-200 shadow-sm">
-                            <p class="text-sm font-semibold text-red-700 mb-1">Na Via Aérea da Orelha Direita (OD)</p>
-                            <p class="text-xs text-gray-600 text-justify leading-relaxed">
-                                <strong>O Problema:</strong> Ao apresentar sons na OD (orelha pior) em intensidades acima de 50dB, o som vibra o crânio e chega à cóclea da OE (orelha melhor, com limiar ósseo de 10-15dB). A diferença entre a intensidade do estímulo e o limiar ósseo oposto ultrapassou a atenuação interaural (40dB).
-                                <br><br>
-                                <strong>A Solução:</strong> Aplicamos ruído na OE para "ocupar" a cóclea esquerda, garantindo que a resposta obtida viesse exclusivamente da orelha direita.
-                            </p>
-                        </div>
-                        <div class="bg-white p-3 rounded border border-gray-200 shadow-sm">
-                            <p class="text-sm font-semibold text-blue-700 mb-1">Na Via Óssea (Bilateral)</p>
-                            <p class="text-xs text-gray-600 text-justify leading-relaxed">
-                                <strong>O Problema:</strong> Ambas as orelhas apresentaram <strong>Gap Aéreo-Ósseo</strong> (diferença entre o som ouvido pelo fone e pelo vibrador ósseo) maior que 10-15dB.
-                                <br><br>
-                                <strong>A Solução:</strong> O mascaramento na via óssea é obrigatório sempre que há gaps, para confirmar que a reserva coclear (nervo) está realmente preservada e diferenciar uma perda condutiva de uma neurossensorial ou mista.
-                            </p>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Parte 2: Explicação dos Laudos -->
-                <div class="mb-6">
-                    <h4 class="font-bold text-slate-800 text-sm mb-2 uppercase tracking-wide">2. Entendendo o Diagnóstico (Laudo)</h4>
-                    <ul class="space-y-3">
-                        <li class="flex gap-3 items-start bg-white p-3 rounded border border-gray-200">
-                            <span class="font-bold text-red-600 whitespace-nowrap text-sm">OD: Perda Mista de grau moderado</span>
-                            <div class="text-xs text-gray-700 text-justify">
-                                <p class="mb-2">Significa que existem dois problemas somados: uma barreira física impedindo o som de entrar (devido à cirurgia de mastoidectomia radical) <strong>E</strong> um desgaste no nervo auditivo.</p>
-                                <p class="font-semibold text-red-800 bg-red-50 p-2 rounded border border-red-100">
-                                    HIPÓTESE DIAGNÓSTICA: A associação da otorreia fétida (secreção com mau cheiro), tontura e histórico cirúrgico sugere fortemente a <strong>Recidiva de Colesteatoma</strong> ou infecção ativa na cavidade mastóidea.
-                                </p>
-                            </div>
-                        </li>
-                        <li class="flex gap-3 items-start bg-white p-3 rounded border border-gray-200">
-                            <span class="font-bold text-blue-600 whitespace-nowrap text-sm">OE: Perda Condutiva de grau leve</span>
-                            <p class="text-xs text-gray-700 text-justify">
-                                A cóclea (nervo) está funcionando perfeitamente (via óssea normal), mas o som não chega até ela com força total. O bloqueio é puramente mecânico, causado pela presença de secreção (líquido) na orelha média, o que amortece a vibração sonora.
-                            </p>
-                        </li>
-                    </ul>
-                </div>
-
-                <!-- Parte 3: Curvas de Imitanciometria -->
-                <div>
-                    <h4 class="font-bold text-slate-800 text-sm mb-2 uppercase tracking-wide">3. O que as Curvas nos dizem?</h4>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div class="p-3 bg-red-50 rounded border border-red-100">
-                            <p class="font-bold text-xs text-red-800 mb-1">OD: Não Realizado</p>
-                            <p class="text-[10px] text-gray-700">
-                                <strong>Não há curva timpanométrica.</strong> Devido à Mastoidectomia Radical, o conduto auditivo se une à cavidade da mastoide, criando um volume de ar excessivo. O equipamento não consegue vedar ou pressurizar essa cavidade gigante, impossibilitando o traçado gráfico.
-                            </p>
-                        </div>
-                        <div class="p-3 bg-blue-50 rounded border border-blue-100">
-                            <p class="font-bold text-xs text-blue-800 mb-1">OE: Curva Tipo B</p>
-                            <p class="text-[10px] text-gray-700">
-                                É uma linha plana que indica que o tímpano não está se movendo. Diferente da OD, aqui o volume é normal, o que sugere que o tímpano está íntegro, mas travado por <strong>líquido (otite média serosa)</strong> atrás dele.
-                            </p>
-                        </div>
-                    </div>
-                </div>
-
-            </div>
-
         </div>
     </div>
 
-    <!-- Scripts de desenho (Canvas) -->
     <script>
-        const freqs = [250, 500, 1000, 2000, 3000, 4000, 6000, 8000];
-        
-        const dataOD = {
-            va: [55, 50, 45, 40, 60, 65, 55, 60],
-            vo: [null, 25, 20, 30, 35, 45, null, null],
-            vaMasked: true, voMasked: true
-        };
-
-        const dataOE = {
-            va: [30, 35, 40, 35, 30, 25, 45, 40],
-            vo: [null, 10, 15, 5, 15, 15, null, null],
-            vaMasked: false, voMasked: true
-        };
-
-        function drawAudiogram(canvasId, data, isRight) {
-            const canvas = document.getElementById(canvasId);
-            const ctx = canvas.getContext('2d');
-            const width = canvas.width;
-            const height = canvas.height;
-            const padding = 30;
+        // Função para alternar entre os mundos
+        function toggleSecret() {
+            const overlay = document.getElementById('secret-overlay');
+            overlay.classList.toggle('active');
             
-            // Background
-            ctx.fillStyle = "white";
-            ctx.fillRect(0, 0, width, height);
-
-            const xStep = (width - 2 * padding) / (freqs.length - 1);
-            const yStep = (height - 2 * padding) / 13; 
-
-            // Grid
-            ctx.beginPath();
-            ctx.strokeStyle = "#e5e7eb";
-            ctx.lineWidth = 1;
-            
-            freqs.forEach((f, i) => {
-                const x = padding + i * xStep;
-                ctx.moveTo(x, padding); ctx.lineTo(x, height - padding);
-                ctx.fillStyle = "#6b7280"; ctx.font = "9px Arial"; ctx.textAlign = "center";
-                ctx.fillText(f >= 1000 ? f/1000 + 'k' : f, x, padding - 8);
-            });
-
-            for (let db = -10; db <= 120; db += 10) {
-                const y = padding + ((db + 10) / 10) * yStep;
-                ctx.moveTo(padding, y); ctx.lineTo(width - padding, y);
-                ctx.fillStyle = "#6b7280"; ctx.font = "9px Arial"; ctx.textAlign = "right";
-                ctx.fillText(db, padding - 5, y + 3);
+            // Pausa o vídeo se estiver tocando ao abrir o pacto
+            const video = document.querySelector('video');
+            if (overlay.classList.contains('active')) {
+                video.pause();
+                createParticles();
             }
-            ctx.stroke();
-
-            const color = isRight ? "#dc2626" : "#2563eb";
-            const getX = (i) => padding + i * xStep;
-            const getY = (db) => padding + ((db + 10) / 10) * yStep;
-
-            // Linhas
-            ctx.beginPath();
-            ctx.strokeStyle = color;
-            ctx.lineWidth = 2;
-            let first = true;
-            data.va.forEach((db, i) => {
-                if (db !== null) {
-                    const x = getX(i); const y = getY(db);
-                    if (first) { ctx.moveTo(x, y); first = false; } else { ctx.lineTo(x, y); }
-                }
-            });
-            ctx.stroke();
-
-            // Símbolos
-            data.va.forEach((db, i) => {
-                if (db !== null) {
-                    const x = getX(i); const y = getY(db);
-                    ctx.beginPath(); ctx.strokeStyle = color; ctx.lineWidth = 2;
-                    if (isRight) { // Triângulo (Mascarado)
-                        ctx.moveTo(x, y - 5); ctx.lineTo(x + 5, y + 4); ctx.lineTo(x - 5, y + 4); ctx.closePath();
-                    } else { // X (Simples)
-                        ctx.moveTo(x - 4, y - 4); ctx.lineTo(x + 4, y + 4); ctx.moveTo(x + 4, y - 4); ctx.lineTo(x - 4, y + 4);
-                    }
-                    ctx.stroke();
-                }
-            });
-
-            data.vo.forEach((db, i) => {
-                if (db !== null) {
-                    const x = getX(i) + (isRight ? 6 : -6); const y = getY(db);
-                    ctx.beginPath(); ctx.strokeStyle = color; ctx.lineWidth = 2;
-                    if (isRight) { // [
-                        ctx.moveTo(x + 3, y - 6); ctx.lineTo(x - 3, y - 6); ctx.lineTo(x - 3, y + 6); ctx.lineTo(x + 3, y + 6);
-                    } else { // ]
-                        ctx.moveTo(x - 3, y - 6); ctx.lineTo(x + 3, y - 6); ctx.lineTo(x + 3, y + 6); ctx.lineTo(x - 3, y + 6);
-                    }
-                    ctx.stroke();
-                }
-            });
         }
 
-        drawAudiogram('canvasOD', dataOD, true);
-        drawAudiogram('canvasOE', dataOE, false);
+        // Gera fagulhas místicas aleatórias
+        function createParticles() {
+            const container = document.getElementById('particles');
+            // Limpa partículas antigas se houver muitas
+            if(container.childElementCount > 50) container.innerHTML = '';
 
-        // Timpanometria
-        function drawTympanogram(canvasId, type, color) {
-            const canvas = document.getElementById(canvasId);
-            const ctx = canvas.getContext('2d');
-            const width = canvas.width;
-            const height = canvas.height;
-            const pX = 20; const pY = 15;
-
-            // Se for "Skipped" (Não realizado), desenhar apenas aviso
-            if (type === 'Skipped') {
-                ctx.fillStyle = "#f9fafb"; // cinza claro
-                ctx.fillRect(0, 0, width, height);
-                
-                // Desenhar X ou aviso
-                ctx.beginPath();
-                ctx.strokeStyle = "#e5e7eb";
-                ctx.lineWidth = 1;
-                ctx.moveTo(0,0); ctx.lineTo(width, height);
-                ctx.moveTo(width,0); ctx.lineTo(0, height);
-                ctx.stroke();
-
-                ctx.fillStyle = "#991b1b"; // vermelho escuro
-                ctx.font = "bold 14px Arial";
-                ctx.textAlign = "center";
-                ctx.fillText("NÃO REALIZADO", width/2, height/2 - 10);
-                ctx.font = "12px Arial";
-                ctx.fillText("(Volume Excessivo)", width/2, height/2 + 10);
-                return;
+            for (let i = 0; i < 20; i++) {
+                const p = document.createElement('div');
+                p.classList.add('particle');
+                p.style.left = Math.random() * 100 + '%';
+                p.style.animationDuration = (Math.random() * 5 + 5) + 's';
+                p.style.animationDelay = (Math.random() * 5) + 's';
+                container.appendChild(p);
             }
-
-            ctx.fillStyle = "white"; ctx.fillRect(0, 0, width, height);
-
-            const xMin = -400, xMax = 200;
-            const mapX = (val) => pX + ((val - xMin) / (xMax - xMin)) * (width - 2 * pX);
-            const mapY = (val) => (height - pY) - (val / 2.0) * (height - 2 * pY);
-
-            // Eixos
-            ctx.beginPath(); ctx.strokeStyle = "#e5e7eb"; ctx.lineWidth = 1;
-            ctx.moveTo(pX, height-pY); ctx.lineTo(width-pX, height-pY);
-            ctx.moveTo(mapX(0), pY); ctx.lineTo(mapX(0), height-pY);
-            ctx.stroke();
-
-            // Curva
-            ctx.beginPath(); ctx.strokeStyle = color; ctx.lineWidth = 2;
-            for (let p = -400; p <= 200; p += 5) {
-                // Tipo B (Linha plana)
-                let c = 0.2 + Math.sin(p/100)*0.02;
-                const x = mapX(p); const y = mapY(c);
-                if (p === -400) ctx.moveTo(x, y); else ctx.lineTo(x, y);
-            }
-            ctx.stroke();
         }
-
-        // Alterado para 'Skipped' na OD
-        drawTympanogram('canvasTympOD', 'Skipped', '#dc2626');
-        drawTympanogram('canvasTympOE', 'B', '#2563eb');
     </script>
+
 </body>
 </html>
+
+     
+                     
+            
